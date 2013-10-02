@@ -654,7 +654,6 @@ oreha_erp_sav_commentaire_supprimer:
     
     
     # ADMIN TOOLS
-    
 oreha_admin_reload_dossiers:
   pattern: /admin/reloadDossiers
   defaults: { _controller: OrehaErpBundle:Admin:reloadDossiers}
