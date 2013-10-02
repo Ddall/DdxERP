@@ -1,0 +1,76 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:Stats:manager_dashboard.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Tableau de bord{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Tableau de bord
+        </legend>
+        <div class="row-fluid well">
+            <div class="span5">
+                <div class="row-fluid" id="nombreProspectsParMois">
+                    <legend>Nombre de nouveaux dossiers par mois</legend>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                {% for mois in nombreProspectsParMois %}
+                                    <th>{{ mois.month }}/{{ mois.year}}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tboby>
+                            <tr>
+                                {% for mois in nombreProspectsParMois %}
+                                    <th>{{ mois.totalMois }}</th>
+                                {% endfor %} 
+                            </tr>
+                        </tboby>
+                    </table>
+                </div>
+                <div class="row-fluid" id="nombreAffairesChiffreesPerdues">
+                    <legend>Affaires chiffrées perdues par mois</legend>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Période</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mois in nombreAffairesChiffreesPerdues %}
+                                <tr>
+                                    <td>{{ mois.month}}/{{mois.year}}</td>
+                                    <td>{{mois.totalMois}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row-fluid" id="nombreAffairesChiffreesPerdues">
+                    <legend>Affaires chiffrées perdues par mois</legend>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Période</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mois in nombreAffairesChiffreesPerdues %}
+                                <tr>
+                                    <td>{{ mois.month}}/{{mois.year}}</td>
+                                    <td>{{mois.totalMois}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                    <div class="row-fluid">
+                        {{ dump(table)}}
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

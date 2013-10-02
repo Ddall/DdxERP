@@ -1,0 +1,36 @@
+{# OrehaERP - Allan - OrehaErpBundle:Courrier:list.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{%  block title %}{{parent()}}Admin - Modèles de courriers{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span11">
+            <legend>
+                Modèles de courriers
+                <a class="btn btn-small btn-success" href="{{ path('oreha_erp_bundle_courrier_ajouter') }}" ><span class="icon-plus"></span> Nouveau modèle de courrier</a>
+            </legend>
+            
+            <div class="span8">
+                <table class="table table-condensed table-hover table-striped">
+                    <thead>
+                        <th>Titre</th>
+                        <th>Element</th>
+                        <th>Date de création du modèle</th>
+                    </thead>
+                    <tbody>
+                        {% for courrier in courriers%}
+                            <tr id="{{ path('oreha_erp_bundle_courrier_voir', { 'id': courrier.id }) }}" class="islink">
+                                <td>
+                                    {{ courrier.titre }}
+                                </td>
+                                <td>{{ courrier.element|capitalize }}</td>
+                                <td>{{ courrier.dateCreation|date(format_datetime) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

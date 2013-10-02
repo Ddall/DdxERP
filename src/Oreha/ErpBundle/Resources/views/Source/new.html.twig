@@ -1,0 +1,34 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:Source:new.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Ajouter une source{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset>
+                <legend>
+                    Ajouter une nouvelle source
+                    <a class="btn btn-small" href="{{ path('oreha_erp_source') }}"><span class="icon-arrow-left"></span> Retour</a>
+                </legend>
+                <div class="well">
+                    <form method="post" {{ form_enctype(formSource) }}>
+                        {{ form_widget(formSource) }}
+                        <input type="submit" class="btn btn-primary" />
+                        <a class="btn" href="{{ path('oreha_erp_source') }}">Annuler</a>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#timepick').datetimepicker();
+        
+    });
+</script>
+{% endblock %}

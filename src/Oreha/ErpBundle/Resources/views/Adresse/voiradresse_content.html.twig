@@ -1,0 +1,8 @@
+{# OrehaERP - ${user} - ${nameAndExt} - ${encoding} #}
+{% block adresse %}
+<address>
+    {{ adresse.voie }}<br>
+    {% if adresse.complement != null %}{{ adresse.complement }}<br>{% endif %}
+    {{ adresse.codePostal }} {{ adresse.ville }}
+</address>
+{% endblock adresse %}

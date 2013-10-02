@@ -1,0 +1,7 @@
+parameters:
+#    oreha_services.example.class: Oreha\ServicesBundle\Example
+
+services:
+#    oreha_services.example:
+#        class: %oreha_services.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

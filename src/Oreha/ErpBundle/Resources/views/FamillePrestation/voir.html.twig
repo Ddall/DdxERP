@@ -1,0 +1,24 @@
+{# OrehaERP - Allan - OrehaErpBundle:FamillePrestation:voir.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Famille de Prestation {{ famille.nom }}{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span10">
+            <legend>
+                Famille de Prestation {{ famille.nom }}
+                <a href="{{ path('oreha_admin_famille_prestation') }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+                <a href="{{ path('oreha_admin_famille_prestation_modifier', {'id': famille.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            </legend>
+            <div class="well">
+                <strong>Nom: </strong>{{ famille.nom }}<br>
+                <br>
+                <blockquote>
+                    <strong>Date de creation: </strong> {{ famille.dateCreation|date(format_date) }} par {{ famille.createur.fullName|capitalize}}<br>
+                    <strong>Date de modification: </strong> {{ famille.dateDerniereModif|date(format_date) }} par {{ famille.dernierModificateur.fullName|capitalize}}<br>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

@@ -1,0 +1,35 @@
+{# OrehaERP - ${user} - ${nameAndExt} - ${encoding} #}
+{% extends 'FOSUserBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} - Profil de {{ user.username }}{% endblock %}
+{% block fos_user_content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Utilisateur {{ user.fullName }}
+            <a href="{{ path('oreha_erp_admin_users_index')}}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_admin_user_changer_mdp', {'username': user.username}) }}"class="btn btn-primary btn-small"><span class="icon-retweet"></span>Modifier mot de passe</a>
+            <a href="{{ path('oreha_erp_admin_user_edit', {'username': user.username}) }}" class="btn btn-primary btn-small"><span class="icon-edit"></span> Modifier le compte</a>
+            {% if not user.enabled %}
+                <a href="{{ path('oreha_erp_admin_user_toggleenable', {'username':user.username})}}" class="btn btn-success btn-small"><span class="icon-lock"></span> Déverrouiller le compte</a>
+            {% else %}
+                <a href="{{ path('oreha_erp_admin_user_toggleenable', {'username':user.username})}}" class="btn btn-danger btn-small"><span class="icon-lock"></span> Verrouiller le compte</a>
+            {% endif %}
+        </legend>
+        <div class="row-fluid">
+            <div class="span8">
+                <strong>Login: </strong> {{ user.username }} <br/>
+                <strong>Statut:</strong> {% if not user.enabled %}<span class="label label-important">Verrouillé</span>
+                        {% else %}<span class="label label-success">Actif</span>{% endif %}<br/>
+                <strong>Email: </strong> {{ user.email }} <br/>
+                <strong>Dernière connexion: </strong> {% if user.lastlogin is not empty %}{{ user.lastlogin.date|date(format_datetime) }} {%else%}Jamais{%endif%}<br/>
+                <strong>Membre de :</strong>
+                <blockquote>
+                    {% for group in user.groups %}
+                        {{ group.name }}<br>
+                    {%endfor%}
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock fos_user_content %}

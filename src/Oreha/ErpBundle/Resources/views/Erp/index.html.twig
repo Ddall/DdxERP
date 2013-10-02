@@ -1,0 +1,83 @@
+{# 
+ *  OrehaERP - allan.irdel
+ *  ErpLayout.twig.html - utf8
+#}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{parent()}} - Accueil{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span10">
+            {% if is_granted('ROLE_MANAGER') %}
+                <div class="row-fluid">
+                    <div class="span8 well">
+                        <legend><strong>Manager: </strong> Validations de transferts en attente</legend>
+                        {% if tovalidate is not empty %}
+                        <blockquote>
+                            <ul class="unstyled">
+                                {% for dossier in tovalidate %}
+                                    <li>
+                                        <strong>{{ dossier.intitule|capitalize }}</strong>
+                                        <span class="label label-success">Affaire gagnée</span>
+                                        <a href="{{ path('oreha_erp_dossier_voir', {'id':dossier.id})}}" class="btn btn-mini btn-primary">Aller au dossier pour valider</a>
+                                    </li>
+                                {%endfor%}
+                            </ul>
+                        </blockquote>
+                        {% else %}
+                            Pas de validation en attente.
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+ 
+            <div class="row-fluid">
+                <div class="span8 well">
+                    <legend>Echéances à venir:</legend>
+                    {% if echeances is not empty %}
+                    <blockquote>
+                        <ul class="unstyled">
+                            {% for echeance in echeances %}
+                                <li>
+                                    <strong>{{ echeance.dossier.intitule }}:</strong>
+                                    {{ echeance.libelle }} - {{ echeance.date|date(format_date)}}
+                                    <a href="{{ path('oreha_erp_dossier_voir', {'id':echeance.dossier.id})}}" class="btn btn-mini btn-primary">Aller au dossier</a>
+                                </li>
+                            {% endfor %}                          
+                        </ul>
+                    </blockquote>
+                    {% else %}
+                        <div class="alert alert-notice">
+                            <span class="icon-info-sign"></span>
+                            Aucune tache à traiter.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span8 well">
+                    <legend>Rendez-vous:</legend>
+                    {% if rdvs is not empty %}
+                    <blockquote>
+                        <ul class="unstyled">
+                            {% for rdv in rdvs %}
+                                {% if not rdv.past %}
+                                    <li>
+                                        <strong>{{ rdv.dossier.intitule }}</strong> -
+                                        {{rdv.type|upper}} avec {{ rdv.contact.fullName|capitalize }} le {{ rdv.date|date(format_date)}} à {{ rdv.date|date(format_time)}}
+                                        <a href="{{ path('oreha_erp_dossier_voir', {'id':rdv.dossier.id}) }}" class="btn btn-mini btn-primary">Aller au dossier</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </blockquote>
+                    {%else%}
+                        <div class="alert alert-notice">
+                            <span class="icon-info-sign"></span> Aucun rendez-vous de prévu.
+                        </div>
+                    {%endif%}
+                </div>
+           </div>           
+        </div>
+    </div>
+{% endblock body %}

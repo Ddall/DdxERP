@@ -1,0 +1,92 @@
+{# OrehaERP - Allan - OrehaErpBundle:Devis:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir devis{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            {{devis.dossier.intitule|upper}} - Devis du {{ devis.date|date(format_date)}}
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': devis.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_devis_modifier', {'id': devis.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce devis?');" href="{{ path('oreha_erp_dossier_devis_supprimer', {'id':devis.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                {% if devis.dateRemise is null %}
+                    <div class="alert alert-warning">
+                        <span class="icon-info-sign"></span> Ce devis n'a pas encore été remis au client.
+                    </div>
+                {% elseif devis.dateSignature is not null %}
+                    <div class="alert alert-success">
+                        <span class="icon-info-sign"></span> Ce devis a été accepté par le client.
+                    </div>
+                {% elseif devis.dateRefus is not null %}
+                    <div class="alert alert-error">
+                        <span class="icon-warning-sign"></span> Ce devis a été refusé par le client le {{ devis.dateRefus|date(format_date)}}.
+                    </div>
+                {% elseif devis.dateRemise is not null %}
+                    <div class="alert alert-notice">
+                        <span class="icon-info-sign"></span> Ce devis a été remis au client le {{ devis.dateRemise|date(format_date)}}.
+                    </div>
+                {% endif %}
+                    
+            </div>
+            <div class="row-fluid">
+                <strong>Chrono Devis : </strong> {{ devis.chronoDevis}}<br>
+                <strong>Montant TTC : </strong> {{ devis.montantTTC|default('NON RENSEIGNE')}}<br>
+                <strong>Montant TVA Taux Normal : </strong> {{ devis.montantTVANormale}}<br>
+                <strong>Montant TVA Taux Réduit : </strong> {{ devis.montantTVAReduite}}
+                    {% if devis.montantTVAReduite %}
+                <span class="text-error"><span class="icon-warning-sign"></span> Avez-vous pensé à l'attestation de TVA réduite?</span>
+                    {%endif%}
+                <br>
+                <strong>Montant Total TTC: </strong> {{ devis.montantTTC }}<br>
+                <strong>Date du devis : </strong> {{ devis.date is empty ? '': devis.date|date(format_date)}}<br>
+                <strong>Date de remise au client: </strong> {{ devis.dateRemise is empty ? '': devis.dateRemise|default()|date(format_date)}}<br>
+                <strong>Date de signature: </strong> {{ devis.dateSignature is empty ? '': devis.dateSignature|date(format_date)}}<br>
+                <strong>Date de refus : </strong> {{  devis.dateRefus is empty ? '': devis.dateRefus|date(format_date)}}<br>
+
+                <br>
+                <legend>
+                    <span class="text-info">Aides CEE</span>
+                    <a href="{{ path('oreha_erp_dossier_devis_cee_ajouter', {'id':devis.id})}}" class="btn btn-small btn-primary"><span class="icon-plus"></span> Saisir nouvelle CEE</a>
+                </legend>
+                {% if devis.cees is not empty %}
+                    <div class="span8">
+                       <table class="table table-hover table-striped table-condensed">
+                           <thead>
+                               <tr>
+                                   <th>Nom de la CEE</th>
+                                   <th>Famille CEE</th>
+                                   <th>Montant</th>
+                                   <th>Date de la demande</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for cee in devis.cees %}
+                                <tr class="islink" id="{{ path('oreha_erp_dossier_devis_cee_voir', {'id' : cee.id}) }}">
+                                    <td>{{ cee.nom|default('NON RENSEIGNE')}}</td>
+                                    <td>{{ cee.famillecee.nom }}</td>
+                                    <td>{{ cee.montant|default('') }}</td>
+                                    <td>{{ cee.dateDemande is not empty ? '': cee.dateDemande|date(format_date) }}</td>
+                                </tr>
+                            {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                {%else%}
+                    <div class="alert alert-info">
+                        <span class="icon-info-sign"></span> Aucun CEE pour ce devis.
+                    </div>
+                {%endif%}
+            </div>
+            <div class="row-fluid">
+                <blockquote>
+                    Créé par {{ devis.createur.fullName }} le {{ devis.dateCreation.date|date('d/m/y H:i')}}<br>
+                    Dernière modification par {{ devis.dernierModificateur.fullName }} le {{ devis.dateDerniereModif.date|date('d/m/y H:i')}}<br>  
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

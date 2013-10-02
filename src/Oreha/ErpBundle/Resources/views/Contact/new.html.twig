@@ -1,0 +1,31 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:Contact:newLinkedToDossier.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Ajouter un contact{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset><legend>Ajouter un contact au dossier {{ dossier.intitule|capitalize}}</legend>
+                <div class="well">
+                    <form method="post" class=" form form-horizontal" {{ form_enctype(formContact) }}>
+                        {% for row in formContact %}
+                                {% if row.vars.name != '_token' %}
+                                <div class="control-group">
+                                    <span class="control-label">{{ form_label(row) }}</span>
+                                    <div class="controls">
+                                        {{ form_widget(row) }}
+                                    </div>
+                                </div>
+                                {% else %}
+                                    {{ form_widget(row)}}
+                                {% endif %}
+                        {% endfor%}
+                        <input type="submit" value="Créer" class="btn btn-primary" />
+                        <a class="btn" href="{{ path('oreha_erp_dossier_voir', {'id':dossier.id}) }}">Annuler</a>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,96 @@
+{# OrehaERP - Allan - OrehaErpBundle:Contact:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - {{ contact.prenom }} {{ contact.nom }}{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span10">
+            <fieldset>
+                <legend>Informations sur {{ contact.prenom }} {{ contact.nom }} 
+                        <a class="btn btn-small" href="{{ path('oreha_erp_dossier_voir', {'id':contact.dossier.id}) }}"><span class="icon-arrow-left"></span> Retour</a>
+                        <a id="editbtn" class="btn btn-info btn-small" href="{{ path('oreha_erp_contact_modifier', {'id': contact.id}) }}"><span class="icon-pencil"></span> Modifier</a>
+                        <a id="deletebtn" onclick="return confirm('Supprimer ce contact?');" class="btn btn-danger btn-small" href="{{ path('oreha_erp_contact_supprimer', {'id': contact.id}) }}"><span class="icon-remove"></span> Supprimer</a>
+                </legend>
+                <div class="well">
+                    <address>
+                        <h2>{{ contact.civilite|capitalize }} {{ contact.prenom }} {{ contact.nom }}</h2>
+                        <div class="row-fluid">
+                            <div class="span8">
+                                <dl class="dl-horizontal">
+                                    {% if contact.type == 'part' %}
+                                        <dt>Type:</dt>
+                                        <dd><span class="label label-success">Particulier</span></dd>
+                                    {% else %}
+                                        <dt>Société :</dt>
+                                        <dd>{{ contact.societe }} <span class="label label-info">Professionnel</span></dd>
+                                    {% endif %}
+
+                                        <dt>Téléphone(s) : </dt>
+                                        <dd>
+                                            {% if contact.telephones is not empty %}
+                                                {% for telephone in contact.telephones %}
+                                                    {{ telephone.numero }} ({{ telephone.libelle }})
+                                                    <a onclick="return confirm('Supprimer ce téléphone?');" href="{{ path('oreha_erp_contact_supprime_telephone', {'id': telephone.id, 'idContact': contact.id}) }}" class="label label-warning"><span class="icon-remove"></span>Supprimer</a> <br>
+                                                {% endfor %}
+                                            {% else %}
+                                                <div class="alert alert-info">
+                                                    <span class="icon-info-sign"></span>
+                                                    <strong>Ce contact n'a pas de numéro de téléphone </strong>
+                                                </div>
+                                            {% endif %}
+                                        </dd>
+
+                                    <dt>Email(s): </dt>
+                                    <dd>
+                                        {% if contact.emails is not empty %}
+                                            {% for email in contact.emails %}
+                                                <a href="mailto:{{ email.email }}">{{ email.email }}</a> ({{ email.libelle}})
+                                                <a onclick="return confirm('Supprimer cet email?');" href="{{ path('oreha_erp_contact_supprime_email', {'id': email.id, 'idContact': contact.id }) }}" class="label label-warning"><span class="icon-remove"></span>Supprimer</a>
+                                                <br>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="alert alert-info">
+                                                <span class="icon-info-sign"></span>
+                                                <strong>Ce contact n'a pas d'adresse mail</strong>
+                                            </div>
+                                        {% endif %}
+
+                                    </dd>
+                                        <dt>Adresse:</dt>
+                                        <dd>
+                                            {% if contact.adresse != null %}
+                                                {% include 'OrehaErpBundle:Adresse:voiradresse_content.html.twig' with { 'adresse': contact.adresse } %}
+                                            {% else %}
+                                                <div class="alert alert-info">
+                                                    <span class="icon-info-sign"></span> 
+                                                    <strong>Ce contact n'a pas d'adresse</strong> 
+                                                    <a class="btn btn-small btn-primary" href="{{ path('oreha_erp_contact_modifier', {'id': contact.id}) }}">Renseigner</a>
+                                                </div>
+                                            {% endif %}
+                                        </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </address>
+                    <div class="row-fluid">
+                        <div class="span8">
+                            <legend>Ajouter un email</legend>
+                            <form method="POST" class="form-horizontal" action="{{ path('oreha_erp_contact_ajoute_email', {'id': contact.id }) }}" >
+                                {{ form_widget(formEmail.email)}}
+                                {{ form_widget(formEmail.libelle)}}
+                                <input class="btn btn-primary" type="submit" value="Ajouter">
+                            </form>
+                            <legend>Ajouter un telephone</legend>
+                            <form method="POST" class="form-horizontal" action="{{ path('oreha_erp_contact_ajoute_telephone', {'id': contact.id }) }}" >
+                                {{ form_widget(formTelephone.numero)}}
+                                {{ form_widget(formTelephone.libelle)}}
+                                <input class="btn btn-primary" type="submit" value="Ajouter">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,40 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:Devis:modifier.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Modifier un devis{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset>
+                <legend>
+                    <strong>{{devis.dossier.intitule|capitalize}} : </strong> Modifier le devis du {{ devis.date|date(format_date)}}
+                    <a class="btn" href="{{ path('oreha_erp_dossier_devis_voir', {'id': devis.id}) }}"><span class="icon-arrow-left"></span> Retour</a>
+                </legend>
+                <div class="well">
+                    <form method="post" class="form form-horizontal" {{ form_enctype(formDevis) }}>
+                        <div class="row-fluid">
+                            {% for row in formDevis %}
+                                {% if row.vars.name != '_token' %}
+                                <div class="control-group">
+                                    <div class="control-label">
+                                        {{ form_label(row) }}
+                                        {{ form_errors(row) }}
+                                    </div>
+                                    <div class="controls">
+                                        {{ form_widget(row) }}
+                                    </div>
+                                </div>
+                                {% else%}
+                                    {{ form_widget(row)}}
+                                {% endif %}
+                            {% endfor%}
+                        </div>
+                        <input type="submit" class="btn btn-primary" />
+                        <a class="btn" href="{{ path('oreha_erp_dossier_devis_voir', {'id': devis.id}) }}">Annuler</a>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,22 @@
+{# 
+ *  OrehaERP - allan.irdel
+ *  reloadDossiers.twig.html - utf8
+#}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{% block title %}{{parent()}} - Mise à jour des droits dossiers{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid well">
+        <div class="span10 ">
+            <h2>Mise à jour des droits dossiers</h2>
+            
+            <div class="alert alert-success">
+                <span class="icon-thumbs-up"></span>
+                <strong>
+                    {{ dossiers | length }} dossiers mis à jour.
+                </strong>
+            </div>
+            
+        </div>
+    </div>
+{% endblock body %}

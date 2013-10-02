@@ -1,0 +1,96 @@
+{# 
+ *  OrehaERP - allan.irdel
+ *  orehaTemplate.twig.html - utf8
+#}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}OrehaERP{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.png') }}" />
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-responsive.min.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('css/datetimepicker.css') }}" type="text/css" />
+        <style>
+            .navbar-search .search-query {
+                padding-left: 29px;
+            }
+
+            .navbar-search .icon-search {
+                position: absolute;
+                top: 7px;
+                left: 11px;
+            }
+        </style>
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+    </head>
+    <body>
+        {% block navbar %}
+        <div class="row">
+        <nav class="navbar">
+            <div class="navbar-inner">
+            <div class="container">
+                <ul class="nav">
+                    <li class="divider-vertical"></li>
+                    <li><a class="brand" href="{{ path('oreha_erp_homepage') }}"><img src="{{ asset('img/logo.jpg') }}"></a></li>
+                    <li><a href="{{ path('oreha_erp_homepage') }}"><i class="icon-home"></i>Accueil</a></li>
+                    {% if is_granted('ROLE_MANAGER') %}
+                        <li><a href="{{ path('oreha_erp_stat') }}"><i class="icon-eye-open"></i>Tableau de bord</a></li>
+                    {% endif%}
+                    <li><a href="{{ path('oreha_erp_dossier') }}"><i class="icon-folder-open"></i>Prospects</a></li>
+                    
+                    <li><a href="{{ path('oreha_erp_client') }}"><i class="icon-briefcase"></i>Clients</a></li>
+                    {% if is_granted('ROLE_CHANTIER') %}
+                        <li><a href="{{ path('oreha_erp_chantier') }}"><i class="icon-wrench"></i>Chantiers</a></li>
+                    {% endif %}
+                    <li><a href="{{ path('oreha_erp_sav') }}"><i class="icon-leaf"></i>S.A.V.</a></li>
+
+                </ul>
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-user"></i> Bonjour {{ app.user.username }} <strong class="caret"></strong></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('oreha_erp_user_edit') }}"><i class="icon-cog"></i> Profil</a></li> {# TODO ADD PROFIL ROUTE #}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li><a href="{{ path('oreha_erp_admin') }}"><i class="icon-briefcase"></i> Administration</a></li>
+                            {% endif %}
+                            <li class="divider"></li>
+                            <li><a href="{{ path('oreha_erp_calendrier_user')}}"><i class="icon-calendar"></i> Calendrier</a></li> {# TODO ADD PROFIL ROUTE #}
+                            <li class="divider"></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}"><i class="icon-off"></i> Deconnexion</a></li>
+                        </ul>
+                    </li>
+{#
+                    <li class="divider-vertical"></li>
+                    <form class="navbar-search pull-right" action="" method="POST">
+                        <input class="search-query span3" type="text" placeholder="Recherche">
+                        <div class="icon-search"></div>
+                    </form>
+#}
+                </ul>
+
+            </div>
+            </div>
+        </nav>
+        </div>
+    {% endblock navbar %}
+    {% block body %}{% endblock %}
+    {% block javascripts %}
+    {% include '::js.html.twig' %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                   $('.islink').click(function(){
+                        var url = $(this).attr('id');
+                        window.location.replace(url); 
+                   });
+                });
+            </script>
+    {% endblock javascripts %}
+    </body>
+</html>
+  

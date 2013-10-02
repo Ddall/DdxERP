@@ -1,0 +1,70 @@
+# OrehaUserBundle:routing.yml
+
+# ROUTES NON PROTEGEES -> POUR LES USERS
+oreha_erp_user_edit:
+  pattern : /selfedit
+  defaults: { _controller: OrehaUserBundle:User:selfEdit }
+  
+
+#TODO PROTEGER CES ROUTES
+oreha_erp_admin_users_index:
+    pattern:  /
+    defaults: { _controller: OrehaUserBundle:GestionUsers:gererUsers }
+    
+oreha_erp_admin_user:
+    pattern: /voir/{username}
+    defaults: { _controller: OrehaUserBundle:GestionUsers:voirUser }
+    
+oreha_erp_admin_user_mini_edit:
+    pattern: /mini
+    defaults: { _controller: OrehaUserBundle:GestionUsers:miniUser }
+    
+oreha_erp_admin_users_add:
+    pattern: /ajouter
+    defaults: { _controller: OrehaUserBundle:GestionUsers:ajouterUser }
+  
+oreha_erp_admin_user_edit:
+    pattern: /editer/{username}
+    defaults: { _controller: OrehaUserBundle:GestionUsers:editerUser }
+
+oreha_erp_admin_user_toggleenable:
+    pattern: /changestatut/{username}
+    defaults: { _controller: OrehaUserBundle:GestionUsers:enableUser }
+
+    
+oreha_erp_admin_user_changer_mdp:
+  pattern: /changermdp/{username}
+  defaults: {_controller: OrehaUserBundle:GestionUsers:changerMdp}
+    
+  #groupes
+oreha_erp_admin_group:
+  pattern: /groupe
+  defaults: { _controller: OrehaUserBundle:Groupe:index }
+  
+oreha_erp_admin_group_voir:
+  pattern: /groupe/{id}
+  defaults: { _controller: OrehaUserBundle:Groupe:voir }
+  requirements:
+    id: \d+
+  
+oreha_erp_admin_group_ajouter:
+  pattern: /groupe/ajouter
+  defaults: { _controller: OrehaUserBundle:Groupe:ajouter }
+  
+oreha_erp_admin_group_editer:
+  pattern: /groupe/{id}/modifier
+  defaults: { _controller: OrehaUserBundle:Groupe:modifier }
+  requirements: 
+    id: \d+
+
+oreha_erp_admin_group_supprimer:
+  pattern: /groupe/{id}/supprimer
+  defaults: { _controller: OrehaUserBundle:Groupe:supprimer }
+  requirements:
+    id: \d+
+    
+oreha_erp_admin_group_ajouter_role:
+  pattern: /groupe/roles/ajouter
+  defaults: { _controller: OrehaUserBundle:Groupe:addRoles }
+  
+    

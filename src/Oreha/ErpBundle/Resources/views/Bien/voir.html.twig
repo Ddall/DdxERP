@@ -1,0 +1,41 @@
+{# OrehaERP - Allan - OrehaErpBundle:Bien:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - {{ dossier.intitule }}{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <fieldset>
+            <legend>
+                Bien 
+                <a class="btn btn-small" href="{{ path('oreha_erp_dossier_voir', {'id': dossier.id} ) }}"><span class="icon-arrow-left"></span> Retour au dossier</a>
+                <a class="btn btn-small btn-info" href="{{ path('oreha_erp_dossier_bien_modifier', {'id': bien.id }) }}"><span class="icon-pencil"></span> Modifier</a>
+            </legend>
+            <div class="well">
+                <h2>Informations générales</h2>
+                <p>
+                    <strong>Type: </strong> {{ bien.type|capitalize }}<br>
+                    <strong>Surface: </strong> {{ bien.surface|capitalize }} m²<br>
+                    <strong>Année de construction: </strong> {{ bien.anneeConstruction }}<br>
+                    {% if bien.valeurAvantTravaux %}
+                        <strong>Valeur avant travaux: </strong> {{ bien.valeurAvantTravaux }}€<br>
+                    {% endif %}
+                    <strong>Adresse: </strong> {{ bien.adresse.fullAdresse|title}}<br>
+                </p>
+                <p>           
+                    <strong>Chauffage:</strong> {{ bien.typeChauffage }}<br>
+                    <strong>Production eau chaude:</strong> {{ bien.typeEauChaude|capitalize }}<br>
+                    {% if bien.dejaEuTravaux %}
+                    <strong>Travaux effectués depuis l'achat du bien:</strong> Oui<br>
+                    <strong>Date des travaux:</strong> {{ bien.dateTravauxRealises }}<br>
+                    <strong>Description des travaux:</strong><br>
+                    {{ bien.travauxEffectues }} <br>
+                    {% else %}
+                    <strong>Travaux effectués depuis l'achat du bien:</strong> Non.<br>
+                    {% endif %}
+                </p>
+                <h2></h2>
+            </div>
+        </fieldset>
+    </div>
+</div>
+{% endblock body %}

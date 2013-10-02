@@ -1,0 +1,34 @@
+{# OrehaERP - Allan - OrehaErpBundle:Pret:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir prestation{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Prestation {{ prestation.famille.nom }} pour le dossier {{ prestation.dossier.intitule }}
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': prestation.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_prestation_modifier', {'id': prestation.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer cette prestation?');" href="{{ path('oreha_erp_dossier_prestation_supprimer', {'id':prestation.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                <strong>Nom : </strong> {{ prestation.famille.nom }}<br>
+                <strong>Prix : </strong> 
+                {% if prestation.montant is not null %}
+                    {{ prestation.montant }}€
+                {%else%}
+                    <span class="text-success">Prestation gratuite</span>
+                {%endif%}
+                <br>
+            </div>
+            <br>
+            <div class="row-fluid">
+                <blockquote>
+                    Créé par {{ prestation.createur.fullName }} le {{ prestation.dateCreation.date|date('d/m/y H:i')}}<br>
+                    Dernière modification par {{ prestation.dernierModificateur.fullName }} le {{ prestation.dateDerniereModif.date|date('d/m/y H:i')}}<br>  
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

@@ -1,0 +1,25 @@
+{# 
+ *  OrehaERP - Oreha:UserBundle:layout.html.twig
+ *  Layout surchargé sur
+#}
+{% extends "::orehaTemplate.html.twig" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span8">
+            {# On affiche les messages flash que définissent les contrôleurs du bundle #}
+            {% for key, messages in app.session.flashbag.all() %}
+                <div class="alert alert-{{ key }}">
+                    {% for message in messages %}
+                       {{ message|trans({}, 'FOSUserBundle') }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            {# On définit ce block, dans lequel vont venir s'insérer les autres vues du bundle #}
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+    </div>
+</div>
+{% endblock %}

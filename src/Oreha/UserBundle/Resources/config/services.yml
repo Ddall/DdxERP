@@ -1,0 +1,13 @@
+parameters:
+#    oreha_user.example.class: Oreha\UserBundle\Example
+
+services:
+#    oreha_user.example:
+#        class: %oreha_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+  oreha_user.registration.form.type:
+    class: Oreha\UserBundle\Form\Type\RegistrationFormType
+    arguments: [%fos_user.model.user.class%]
+    tags:
+      - { name: form.type, alias: oreha_user_registration }

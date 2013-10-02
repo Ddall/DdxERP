@@ -1,0 +1,24 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:TicketSAV:editerCommentaire.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Editer un commentaire{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset>
+                <legend>
+                    Editer un commentaire
+                    <a class="btn btn-small" href="{{ path('oreha_erp_sav_voir', {'id': ticket.id}) }}"><span class="icon-arrow-left"></span> Retour au ticket</a>
+                </legend>
+                <div class="well">
+                    <form method="post" {{ form_enctype(formCommentaire) }}>
+                        {{ form_widget(formCommentaire) }}
+                        <input type="submit" class="btn btn-primary" />
+                        <a class="btn" href="{{ path('oreha_erp_sav_voir', {'id': ticket.id}) }}">Annuler</a>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

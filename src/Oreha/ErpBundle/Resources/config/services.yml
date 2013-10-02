@@ -1,0 +1,28 @@
+parameters:
+#    oreha_erp.example.class: Oreha\ErpBundle\Example
+
+services:
+#    oreha_erp.example:
+#        class: %oreha_erp.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+  oreha_entity_owner.listener:
+    class: Oreha\ErpBundle\EventListener\EntityOwnerListener
+    arguments: ['@service_container']
+    tags:
+      - { name: doctrine.event_listener, event: prePersist }
+      - { name: doctrine.event_listener, event: preUpdate }
+      
+      
+  oreha.erpbundle.calendar_listener:
+    class: Oreha\ErpBundle\EventListener\CalendarEventListener
+    arguments: ['@doctrine.orm.entity_manager', '@service_container']
+    tags:
+      - { name: kernel.event_listener, event: calendar.load_events, method: loadEvents }
+      
+      
+  oreha.statut.listener:
+    class: Oreha\ErpBundle\EventListener\StatutListener
+    arguments: ['@service_container']
+    tags:
+      - { name: doctrine.event_listener, event: prePersist }

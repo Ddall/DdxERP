@@ -1,0 +1,9 @@
+{# OrehaERP - ${user} - ${nameAndExt} - ${encoding} #}
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block title %}{{parent()}} - Ajouter un utilisateur{% endblock %}
+{% block fos_user_content %}
+<fieldset><legend>Ajouter un utilisateur</legend>
+    {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+</fieldset>
+{% endblock fos_user_content %}

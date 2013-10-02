@@ -1,0 +1,30 @@
+{# OrehaERP - Allan - OrehaErpBundle:Payement:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir Paiement{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Dossier {{ payement.dossier.intitule|capitalize}} - Paiement du {{ payement.date|date(format_date)}}
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': payement.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_payement_modifier', {'id': payement.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce paiement?');" href="{{ path('oreha_erp_dossier_payement_supprimer', {'id': payement.id}) }}" class="btn btn-small btn-danger"><span class="icon-remove"></span> Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                <strong>Libellé : </strong> {{ payement.libelle }} <br>
+                <strong>Date : </strong> {{ payement.date|date(format_date) }}<br>
+                <strong>Montant : </strong> {{ payement.montant }}€<br>
+                <strong>Mode de paiement : </strong> {{ payement.mode|capitalize }}<br>
+            </div>
+            <div class="row-fluid">
+                <br>
+                <blockquote>
+                    Créé par {{ payement.createur.fullName }} le {{ payement.dateCreation.date|date('d/m/y H:i')}}<br>
+                    Dernière modification par {{ payement.dernierModificateur.fullName }} le {{ payement.dateDerniereModif.date|date('d/m/y H:i')}}<br>  
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

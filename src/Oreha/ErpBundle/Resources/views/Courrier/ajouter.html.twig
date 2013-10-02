@@ -1,0 +1,52 @@
+{# OrehaERP - Allan - OrehaErpBundle:Courrier:ajouter.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Modèle de courrier{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid ">
+        <div class="span10">
+            <div class="well">
+                <legend>
+                    Modèle de courrier
+                    <a href="{{ path('oreha_erp_bundle_courrier') }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+                </legend>
+                    {#
+                <div class="alert alert-info">
+                    <span class="icon-info-sign"></span> Transférer un dossier permet de blablabla.
+                </div>
+                    #}
+                <form method="post" class="form form-horizontal" {{ form_enctype(formCourrier) }}>
+                    <div class="row-fluid">
+                        {% for row in formCourrier %}
+                            {% if row.vars.name != '_token' %}
+                            <div class="control-group">
+                                <div class="control-label">
+                                    {{ form_label(row) }}
+                                    {{ form_errors(row) }}
+                                </div>
+                                <div class="controls">
+                                    {{ form_widget(row) }}
+                                </div>
+                            </div>
+                            {% else%}
+                                {{ form_widget(row)}}
+                            {% endif %}
+                        {% endfor%}
+                    </div>
+                    <div class="row-fluid">
+                        <div class="offset1">
+                            <input type="submit" class="btn btn-primary" />
+                            <a class="btn" href="{{ path('oreha_erp_bundle_courrier') }}">Annuler</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock body%}
+{% block javascripts%}
+{{ parent()}}
+{{ tinymce_init() }}
+{% endblock javascripts%}

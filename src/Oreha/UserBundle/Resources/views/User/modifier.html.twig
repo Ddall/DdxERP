@@ -1,0 +1,40 @@
+{# OrehaERP - Allan - Oreha:UserBundle:User:edit.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{% block title %}{{ parent()}} Modifier un utilisateur{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset>
+                <legend>
+                    Modifier les informations du compte {{ user.fullName }}
+                    <a class="btn" href="{{ path('oreha_erp_admin_user', {'username': user.username }) }}"><span class="icon-arrow-left"></span> Retour</a>
+                </legend>
+                <div class="well">
+                    <form method="post" class="form form-horizontal" {{ form_enctype(formUser) }}>
+                        <div class="row-fluid">
+                            {% for row in formUser %}
+                                {% if row.vars.name != '_token' %}
+                                <div class="control-group">
+                                    <div class="control-label">
+                                        {{ form_label(row) }}
+                                        {{ form_errors(row) }}
+                                    </div>
+                                    <div class="controls">
+                                        {{ form_widget(row) }}
+                                    </div>
+                                </div>
+                                {% else%}
+                                    {{ form_widget(row)}}
+                                {% endif %}
+                            {% endfor%}
+                        </div>
+                        <input type="submit" class="btn btn-primary" />
+                        <a class="btn" href="{{ path('oreha_erp_admin_user', {'username': user.username }) }}">Annuler</a>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

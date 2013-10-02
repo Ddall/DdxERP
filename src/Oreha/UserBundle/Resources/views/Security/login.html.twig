@@ -1,0 +1,65 @@
+{% extends "::orehaTemplate.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block title %}{{parent()}} - Connexion{% endblock %}
+{% block stylesheets %}
+    <style type="text/css">
+        body {
+          padding-top: 40px;
+          padding-bottom: 40px;
+          background-color: #F0F0F0;
+        }
+
+        .form-signin {
+          max-width: 300px;
+          padding: 19px 29px 50px;
+          margin: 0 auto 20px;
+          background-color: #fff;
+          border: 1px solid #e5e5e5;
+          -webkit-border-radius: 5px;
+             -moz-border-radius: 5px;
+                  border-radius: 5px;
+          -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+             -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+        }
+        .form-signin .form-signin-heading,
+        .form-signin .checkbox {
+          margin-bottom: 10px;
+        }
+        .form-signin input[type="text"],
+        .form-signin input[type="password"] {
+          font-size: 16px;
+          height: auto;
+          margin-bottom: 15px;
+          padding: 7px 9px;
+        }
+    </style>
+{% endblock %}
+{% block navbar %}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="form-signin">
+        <a href="{{ path('fos_user_security_login') }}"><img class="pull-left" src="{{ asset('img/LogoOreha.png') }}" alt="Oreha"></a>
+        <h2 class="form-signin-heading">Connexion</h2>
+        {% if error %}
+            <div class="alert alert-error">
+                {{ error|trans }}<a class="close" data-dismiss="alert" href="#">x</a>
+            </div>
+        {% endif %}
+        <form action="{{ path("fos_user_security_check") }}" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+            <label for="username">{{ 'security.login.username'|trans }}</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+
+            <label for="password">{{ 'security.login.password'|trans }}</label>
+            <input type="password" id="password" name="_password" required="required" />
+            
+            <label class="checkbox" for="remember_me">{{ 'security.login.remember_me'|trans }} 
+            <input type="checkbox" id="remember_me" name="_remember_me" value="on" /></label>
+            
+            <input class="btn btn-info btn-large pull-right" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+        </form>
+    </div>
+</div>
+{% endblock body %}

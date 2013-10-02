@@ -1,0 +1,55 @@
+jms_security_extra:
+    secure_all_services: false
+    expressions: true
+
+security:
+    encoders:
+        Oreha\UserBundle\Entity\User: sha512
+
+    role_hierarchy:
+        ROLE_ADMINISTATEUR:       ROLE_USER
+        ROLE_GESTION_USERS:       ROLE_USER
+        ROLE_ADMINISTRATIF:       ROLE_USER
+        ROLE_COMMERCIAL:          ROLE_USER
+        ROLE_BE:                  ROLE_USER
+        ROLE_CHANTIER:            ROLE_USER
+        ROLE_FACTURATION:         ROLE_USER
+        ROLE_MANAGER:             ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH, ROLE_ADMINISTATEUR, ROLE_GESTION_USERS, ROLE_ADMINISTRATIF, ROLE_ADMINISTRATIF, ROLE_COMMERCIAL, ROLE_COMMERCIAL, ROLE_CHANTIER, ROLE_FACTURATION]
+
+    providers:
+        main:
+          id: fos_user.user_provider.username
+          
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main_login:
+          pattern: ^/login$
+          anonymous: true
+          
+        check_login:
+          pattern: ^/check_login
+          anonymous: true
+          
+        main:
+            pattern:   ^/
+            anonymous: false
+            provider: main
+            form_login:
+              login_path: fos_user_security_login
+              check_path: fos_user_security_check
+            logout:
+              path: fos_user_security_logout
+              target: /login
+
+            remember_me:
+              key: XCcX6RbAJSTdfgQLZ72
+            #anonymous: ~
+            #http_basic:
+            #    realm: "Secured Demo Area"
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/admin, roles: ROLE_ADMINISTATEUR  }

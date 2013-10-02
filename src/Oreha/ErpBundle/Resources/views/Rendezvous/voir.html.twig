@@ -1,0 +1,20 @@
+{# OrehaERP - Allan - OrehaErpBundle:RendezVous:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir rendez-vous{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Rendez-vous
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': rdv.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_rdv_modifier', {'id': rdv.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce rendez-vous?');" href="{{ path('oreha_erp_dossier_rdv_supprimer', {'id':rdv.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well span10">
+            <strong>Date du rendez-vous : </strong> {{ rdv.date|date(format_datetime) }}<br>
+            <strong>Nom du contact : </strong>{{ rdv.contact.fullName }}<br>
+            <strong>Lieu du rendez-vous : </strong>{{ rdv.lieu.fullAdresse }}<br>
+        </div>
+    </div>
+</div>
+{% endblock body%}

@@ -1,0 +1,42 @@
+{# OrehaERP - Allan - OrehaErpBundle:Client:list.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Clients{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset>
+                <legend>
+                    Clients
+                </legend>
+                <div class="row-fluid">
+                    <table class="table table-condensed table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th class="colchrono">#</th>
+                                <th class="colintitule">Intitulé</th>
+                                <th class="colsource">Source</th>
+                                <th class="colsuivi">Suivi par</th>
+                                <th class="colcrea">Création</th>
+                                <th class="colmodif">Dernière modification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for client in listeClients %}
+                                <tr class="islink" id="{{ path('oreha_erp_client_voir', {'id': client.id}) }}">
+                                    <td class="colchrono" >{{ client.dossier.chrono }}</td>
+                                    <td class="colintitule">{{ client.dossier.intitule }}</td>
+                                    <td class="colsource">{{ client.dossier.source.intitule }}</td>
+                                    <td class="colsuivi">{{client.dossier.statut.suivipar.fullName|capitalize}}</td>
+                                    <td class="colcrea">{{ client.dossier.dateCreation.date|date('d/m/y H:i')}} par {{ client.dossier.createur.fullName }} </td>
+                                    <td class="colmodif">{{ client.dateDerniereModif.date|date('d/m/y H:i')}} par {{ client.dernierModificateur.fullName }} </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,28 @@
+{# OrehaERP - Allan - OrehaErpBundle:Courrier:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Modèle de courrier{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Modèle de courrier: {{ courrier.titre }}
+            <a href="{{ path('oreha_erp_bundle_courrier')}}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_bundle_courrier_modifier', {'id': courrier.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce rendez-vous?');" href="{{ path('oreha_erp_dossier_echeance_supprimer', {'id':courrier.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                <div class="span5">
+                    <blockquote>
+                        <strong>Titre du modèle: </strong> {{ courrier.titre }}<br/>
+                        <strong>Date de création:</strong> {{ courrier.dateCreation|date(format_datetime)}} par {{ courrier.createur.fullName }}<br>
+                        <strong>Dernière modification:</strong> {{ courrier.dateDerniereModif|date(format_datetime)}} par {{ courrier.dernierModificateur.fullName }}<br>
+                    </blockquote>
+                    <strong>Corps du courrier: </strong><br>
+                    <p>{{ courrier.corps}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

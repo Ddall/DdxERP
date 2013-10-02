@@ -1,0 +1,6 @@
+{# OrehaERP - Allan - OrehaErpBundle::debug.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Debug{% endblock %}
+{% block body%}
+{{ dump() }}
+{% endblock body %}

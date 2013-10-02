@@ -1,0 +1,45 @@
+{# OrehaERP - Allan - OrehaErpBundle:TicketSAV:list.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}}Tickets{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span11">
+            <legend>
+                Tickets SAV
+            </legend>
+            <div class="">
+                <table class="table table-condensed table-hover table-striped">
+                    <thead>
+                        <th>#</th>
+                        <th>Chrono</th>
+                        <th>Client</th>
+                        <th>Intitulé</th>
+                        <th>Statut</th>
+                        <th>Date d'ouverture</th>
+                        <th>Dernière modification</th>
+                    </thead>
+                    <tbody>
+                        {% for ticket in listeTickets %}
+                            <tr id="{{ path('oreha_erp_sav_voir', { 'id': ticket.id }) }}" class="islink
+                                {% if ticket.statut == 'ouvert' %}info
+                                {% elseif ticket.statut == 'ferme' %}success
+                                {% else %}warning
+                                {% endif %}
+                                ">
+                                <td>{{ ticket.id}}</td>
+                                <td>{{ ticket.chrono}}</td>
+                                <td>{{ ticket.client.dossier.intitule|capitalize }}</td>
+                                <td>{{ ticket.intitule }}</td>
+                                <td>{{ ticket.statut|upper}}</td>
+                                <td>{{ ticket.dateCreation|date(format_datetime) }} par {{ ticket.createur.fullName|capitalize }}</td>
+                                <td>{{ ticket.dateDerniereModif|date(format_datetime) }} par {{ ticket.dernierModificateur.fullName|capitalize }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

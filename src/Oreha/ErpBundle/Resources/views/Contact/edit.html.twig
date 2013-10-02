@@ -1,0 +1,76 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:Contact:edit.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Modifier {{contact.prenom}} {{ contact.nom }} {% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset><legend>Editer contact</legend>
+                <div class="well">
+                    <form method="post" class=" form form-horizontal" {{ form_enctype(formContact) }}>
+                        {% for row in formContact %}
+                                {% if row.vars.name != '_token' %}
+                                <div class="control-group">
+                                    <span class="control-label">{{ form_label(row) }}</span>
+                                    <div class="controls">
+                                        {{ form_widget(row) }}
+                                    </div>
+                                </div>
+                                {% else %}
+                                    {{ form_widget(row)}}
+                                {% endif %}
+                        {% endfor%}
+                            
+                         {#   
+                        {{ form_label(formContact.emails) }}
+                        {{ form_errors(formContact.emails) }}
+                        <ul id="email-fields-list" data-prototype="{{ form_widget(formContact.emails.vars.prototype) | e }}">
+                        {% for emailField in formContact.emails %}
+                                <li>
+                                    {{ form_errors(emailField) }}
+                                    {{ form_widget(emailField) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="#" class="btn btn-small btn-primary" id="add-another-email">Add another email</a>
+                        #}
+                        
+                        <input type="submit" class="btn btn-primary" />
+                        <a class="btn" href="{{ path('oreha_erp_contact_voir', { 'id': contact.id}) }}">Annuler</a>
+                    </form>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body%}
+{#
+{% block javascripts%}
+{{ parent()}}
+<script type="text/javascript">
+    // garde une trace du nombre de champs email qui ont été affichés
+    var emailCount = '{{ formContact.emails | length }}';
+
+    $(document).ready(function() {
+        $('#add-another-email').click(function() {
+            
+            var emailList = $('#email-fields-list');
+
+            // parcourt le template prototype
+            var newWidget = emailList.attr('data-prototype');
+            // remplace les "__name__" utilisés dans l'id et le nom du prototype
+            // par un nombre unique pour chaque email
+            // le nom de l'attribut final ressemblera à name="contact[emails][2]"
+            newWidget = newWidget.replace(/__name__/g, emailCount);
+            emailCount++;
+
+            // créer une nouvelle liste d'éléments et l'ajoute à notre liste
+            var newLi = $('<li></li>').html(newWidget);
+            newLi.appendTo($('#email-fields-list'));
+console.log(emailList);
+            return false;
+        });
+    });
+</script>
+{% endblock javascripts%} 
+#}

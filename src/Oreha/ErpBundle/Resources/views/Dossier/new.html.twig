@@ -1,0 +1,39 @@
+{# OrehaERP - Allan IRDEL- OrehaErpBundle:Dossier:new.html.twig - UTF8 #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Nouveau dossier{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span12">
+            <fieldset>
+                <legend>
+                    Nouveau dossier
+                    <a href="{{ path('oreha_erp_dossier') }}" class="btn"><span class="icon-arrow-left"></span> Retour</a>
+                </legend>
+                <form class="form-horizontal" method="post" {{ form_enctype(formDossier) }}>
+                    <div class="well">
+                        <h2>Dossier</h2>
+                        {{ form_widget(formDossier) }}  
+                        
+                        <fieldset>
+                        <legend>Contact</legend>
+                        {{ form_widget(formContact) }}
+                        
+                        <h4>Coordonées contact</h4>
+                        {{ form_widget(formTelPort) }}
+                        {{ form_widget(formEmail) }}
+                        </fieldset>
+                        
+{#
+{{ form_label(form.task) }}
+{{ form_errors(form.task) }}
+{{ form_widget(form.task) }}
+#}
+                    <input type="submit" class="btn btn-primary" />
+                    <a class="btn" href="{{ path('oreha_erp_dossier') }}">Annuler</a>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}

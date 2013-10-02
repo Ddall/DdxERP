@@ -1,0 +1,56 @@
+{# OrehaERP - Allan - OrehaErpBundle:Declaration:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir déclaration{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            {{ declaration.dossier.intitule|upper}} - {{ declaration.famille.code|capitalize}} - {{ declaration.nom}}
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': declaration.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_declaration_modifier', {'id': declaration.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce devis?');" href="{{ path('oreha_erp_dossier_declaration_supprimer', {'id':declaration.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                {% if declaration.dateDepot is not empty %}
+                    {% if declaration.dateRefus is not empty %}
+                        <div class="alert alert-error">
+                            <span class="icon-thumbs-down"></span> Refusé le {{ declaration.dateRefus|date(format_date)}}
+                        </div>
+                    {%elseif declaration.dateAccepte is not empty %}
+                        <div class="alert alert-success">
+                            <span class="icon-thumbs-up"></span> Accepté le {{ declaration.dateAccepte|date(format_date)}}
+                        </div>
+                    {%else%}
+                        <div class="alert alert-info">
+                            <span class="icon-info-sign"></span> En cours d'instruction.
+                        </div>
+                    {%endif%}
+                    
+                {% else %}
+                    <div class="alert alert-warning">
+                        <span class="icon-info-sign"></span> Pas de date de dépot.
+                    </div>                
+                {% endif %}
+            </div>
+            <div class="row-fluid">
+                <strong>Intitulé :</strong> {{ declaration.nom }}<br>
+                <strong>Type de déclaration: </strong> {{ declaration.famille.nom|capitalize}}<br>
+                <strong>Date de la demande : </strong> {{ declaration.dateDepot is empty ? '' : declaration.dateDepot|date(format_date)}}<br>
+                <strong>Date d'acceptation de la demande: </strong> {{ declaration.dateAccepte is empty ? '' : declaration.dateAccepte|date(format_date)}}<br>
+                <strong>Date de refus de la demande: </strong> {{ declaration.dateRefus is empty ? '' : declaration.dateRefus|date(format_date)}}<br>
+                <strong>Commentaires: </strong>
+                <p>{{ declaration.commentaire is empty ? '': declaration.commentaire}}</p>
+                
+            </div>
+
+            <div class="row-fluid">
+                <blockquote>
+                    Créé par {{ declaration.createur.fullName }} le {{ declaration.dateCreation.date|date('d/m/y H:i')}}<br>
+                    Dernière modification par {{ declaration.dernierModificateur.fullName }} le {{ declaration.dateDerniereModif.date|date('d/m/y H:i')}}<br>  
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

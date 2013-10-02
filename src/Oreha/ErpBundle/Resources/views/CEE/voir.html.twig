@@ -1,0 +1,33 @@
+{# OrehaERP - Allan - OrehaErpBundle:CEE:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir CEE{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Aide CEE {{ cee.nom }} pour le devis du {{ cee.devis.date|date(format_date)}} (Dossier: {{ cee.devis.dossier.intitule|upper}} )
+            <a href="{{ path('oreha_erp_dossier_devis_voir', {'id': cee.devis.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_devis_cee_modifier', {'id': cee.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce CEE?');" href="{{ path('oreha_erp_dossier_devis_supprimer', {'id':cee.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                <strong>Nom : </strong> {{ cee.nom|default('NON RENSEIGNE') }}<br>
+                <strong>Montant : </strong> {{ cee.montant|default('NON RENSEIGNE')}}<br>
+                
+                <strong>Date de la demande : </strong> {{ cee.dateDemande is empty ? '' : cee.dateDemande|date(format_date) }}<br>
+                <strong>Date d'envoi en instruction: </strong> {{ cee.dateEnvoiInstruction is empty ? '' : cee.dateEnvoiInstruction|date(format_date) }}<br>
+                <strong>Date de retour d'instruction : </strong> {{ cee.dateRetourInstruction is empty ? '' : cee.dateRetourInstruction|date(format_date) }}<br>
+                <strong>Resultat de l'instruction : </strong> {{ cee.retourInstruction|default('') }}<br>
+
+            </div>
+            <div class="row-fluid">
+                <blockquote>
+                    Créé par {{ cee.createur.fullName }} le {{ cee.dateCreation.date|date('d/m/y H:i')}}<br>
+                    Dernière modification par {{ cee.dernierModificateur.fullName }} le {{ cee.dateDerniereModif.date|date('d/m/y H:i')}}<br>  
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

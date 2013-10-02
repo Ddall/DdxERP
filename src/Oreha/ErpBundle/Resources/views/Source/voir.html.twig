@@ -1,0 +1,27 @@
+{# OrehaERP - Allan - OrehaErpBundle:Source:voir.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{%  block title %}{{parent()}} - {{ source.nom|capitalize }}{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span10">
+            <legend>
+                Source - {{ source.nom|capitalize }}
+                <a href="{{ path('oreha_erp_source') }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+                <a href="{{ path('oreha_erp_source_modifier', {'id': source.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            </legend>
+            <div class="well">
+                <strong>Nom: </strong>{{ source.nom }}<br>
+                <strong>Date: </strong>{{ source.date is null ? null: source.date|date('d/m/y') }}<br>
+                <strong>Categorie: </strong> {{ source.type|capitalize }}<br>
+                
+                <p>
+                    <strong>Ajouté par: </strong> {{ source.createur.fullName }}<br/>
+                    <strong>Date de création: </strong> {{ source.dateCreation|date(format_date) }}<br/>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock body%}

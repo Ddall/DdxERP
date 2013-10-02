@@ -1,0 +1,13 @@
+{# OrehaERP - ${user} - ${nameAndExt} - ${encoding} #}
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+{% block title %}{{ parent() }} - Utilisateur activé{% endblock %}
+{% block fos_user_content %}
+    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+    {% if app.session is not empty %}
+        {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>{% endif %}
+    {% endif %}
+            <a class="btn btn-success" href="{{ path('oreha_erp_admin_users_index')}}">Retour</a>
+{% endblock fos_user_content %}

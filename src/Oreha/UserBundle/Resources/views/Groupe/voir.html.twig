@@ -1,0 +1,25 @@
+{# OrehaERP - ${user} - ${nameAndExt} - ${encoding} #}
+{% extends 'FOSUserBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} - Groupe {{ groupe.name }}{% endblock %}
+{% block fos_user_content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Groupe {{ groupe.name }}
+            <a href="{{ path('oreha_erp_admin_group')}}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_admin_group_editer', {'id': groupe.id})}}" class="btn btn-small btn-primary"><span class="icon-edit"></span> Modifier</a>
+
+        </legend>
+        <div class="row-fluid">
+            <div class="span8">
+                <strong>Nom du groupe: </strong> {{ groupe.name }} <br/>
+                <blockquote>
+                    {% for role in groupe.roles %}
+                        {{ role }}<br>
+                    {%endfor%}
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock fos_user_content %}

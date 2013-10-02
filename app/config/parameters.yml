@@ -1,0 +1,27 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     oreha
+    database_user:     oreha
+    database_password: XCcX6RbAJSTQLZ72
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    locale:            fr
+    secret:            bnRIO5VLwmKIXyMCe6vNe89Oo7oiaxwh
+
+    google_api_key:   xxxx
+    google_map_api_url: xxxx
+    
+    sys_user: system
+    admin_username : admin
+    superadmin_group : ROLE_SUPER_ADMIN
+    app_email:    contact@oreha.fr
+    
+    format_date : "d/m/Y"
+    format_datetime: "d/m/Y H:i"    
+    format_time: "H:i"    

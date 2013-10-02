@@ -1,0 +1,660 @@
+oreha_erp_homepage:
+    pattern:  /
+    defaults: { _controller: OrehaErpBundle:index:index }
+    
+#DOSSIERS
+oreha_erp_dossier:
+    pattern:  /dossiers
+    defaults: { _controller: OrehaErpBundle:Dossier:index}
+    
+oreha_erp_dossier_kill:
+    pattern:  /dossierskill
+    defaults: { _controller: OrehaErpBundle:Dossier:kill }
+    
+oreha_erp_dossier_ajouter:
+    pattern: /dossier/ajouter
+    defaults: { _controller: OrehaErpBundle:Dossier:ajouter }
+    
+oreha_erp_dossier_ajouter_vide:
+    pattern: /dossier/ajout/rapide
+    defaults: { _controller: OrehaErpBundle:Dossier:ajoutRapide }
+    
+   
+# TODO IMPLEMENTE MOI
+oreha_erp_dossier_ajouter_contact: 
+  pattern: /dossier/{id}/contact/ajouter
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterContact }
+  requirements:
+    id: \d+
+    
+#Calendrier
+oreha_erp_calendrier_user:
+  pattern: /calendrier
+  defaults: { _controller: OrehaErpBundle:index:calendrier }
+  
+    
+#DOSSIER GAGNE-PERDU
+oreha_erp_dossier_gagne: 
+  pattern: /dossier/{id}/gagne
+  defaults: { _controller: OrehaErpBundle:Dossier:gagne }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_perdu: 
+  pattern: /dossier/{id}/perdu
+  defaults: { _controller: OrehaErpBundle:Dossier:perdu }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_sanssuite: 
+  pattern: /dossier/{id}/sanssuite
+  defaults: { _controller: OrehaErpBundle:Dossier:sanssuite }
+  requirements:
+    id: \d+
+    
+    
+oreha_erp_dossier_voir:
+    pattern:  /dossier/{id}
+    defaults: { _controller: OrehaErpBundle:Dossier:voir}
+    requirements:
+      id: \d+
+     
+oreha_erp_dossier_modifier:
+    pattern:  /dossier/{id}/modifier
+    defaults: { _controller: OrehaErpBundle:Dossier:modifier}
+    requirements:
+      id: \d+
+      
+  
+#DOSSIER - STUFFS
+oreha_erp_dossier_bien_ajouter:
+  pattern: /dossier/{id}/bien/ajouter
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterBien}
+  requirements:
+    id: \d+
+    
+    # BIENS - DOSSIER
+oreha_erp_dossier_bien_voir:
+  pattern: /dossier/bien/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirBien }
+  requirements:
+    id: \d+
+  
+oreha_erp_dossier_bien_modifier:
+  pattern: /dossier/bien/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierBien }
+  requirements:
+    id: \d+
+    
+    # STATUT - DOSSIER
+oreha_erp_dossier_statut_ajouter:
+  pattern: /dossier/{id}/statut/ajouter
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterStatut }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_statut_valider:
+  pattern: /dossier/{id}/statut/valider
+  defaults: { _controller: OrehaErpBundle:Dossier:validerTransfert }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_statut_refuser:
+  pattern: /dossier/{id}/statut/refuser
+  defaults: { _controller: OrehaErpBundle:Dossier:refuserTransfert }
+  requirements:
+    id: \d+
+    
+  
+    
+    # RENDEZVOUS - DOSSIER
+oreha_erp_dossier_rdv_ajouter:
+  pattern: /dossier/{id}/rendezvous/ajouter
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterRendezvous }
+  requirements: 
+    id: \d+
+    
+oreha_erp_dossier_rdv_voir:
+  pattern: /dossier/rendezvous/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirRendezVous }
+  requirements: 
+    id: \d+
+    
+oreha_erp_dossier_rdv_modifier:
+  pattern: /dossier/rendezvous/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierRendezVous }
+  requirements: 
+    id: \d+
+    
+oreha_erp_dossier_rdv_supprimer:
+  pattern: /dossier/rendezvous/{id}/supprimer
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerRendezVous }
+  requirements: 
+    id: \d+
+    
+    #COMMENTAIRES - DOSSIER
+oreha_erp_dossier_commentaire_modifier:
+  pattern: /dossier/{idDossier}/commentaire/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Dossier:editCommentaire }
+  requirements:
+    id: \d+
+    idDossier: \d+
+
+oreha_erp_dossier_commentaire_supprimer:
+  pattern: /dossier/{idDossier}/commentaire/{id}/supprimer
+  defaults: { _controller: OrehaErpBundle:Dossier:deleteCommentaire }
+  requirements:
+    id: \d+
+    idDossier: \d+
+
+    # ECHEANCES - DOSSIER
+oreha_erp_dossier_echeance_ajouter:
+  pattern: /dossier/{id}/echeance/ajouter
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterEcheance }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_echeance_modifier:
+  pattern: /dossier/echeance/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierEcheance }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_echeance_voir:
+  pattern: /dossier/echeance/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirEcheance }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_echeance_supprimer:
+  pattern: /dossier/echeance/supprimer/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerEcheance }
+  requirements:
+    id: \d+
+    
+    # TRANSFERT DOSSIER
+oreha_erp_dossier_transfert_ajouter:
+  pattern: /dossier/{id}/transferer
+  defaults: { _controller: OrehaErpBundle:Dossier:transfertDossier }
+  requirements:
+    id: \d+  
+    
+oreha_erp_dossier_transfert_valider_client:
+  pattern: /dossier/{id}/validerclient
+  defaults: { _controller: OrehaErpBundle:Dossier:validerClient }
+  requirements:
+    id: \d+  
+    
+oreha_erp_dossier_transfert_refuser_client:
+  pattern: /dossier/{id}/refuserClient
+  defaults: { _controller: OrehaErpBundle:Dossier:refuserClient }
+  requirements:
+    id: \d+  
+    
+
+  #############
+# CLIENTS
+oreha_erp_client:
+    pattern:  /client
+    defaults: { _controller: OrehaErpBundle:Client:index}
+
+oreha_erp_client_voir:
+    pattern: /client/{id}
+    defaults: { _controller: OrehaErpBundle:Client:voir }
+    requirements:
+      id: \d+
+      
+oreha_erp_test:
+    pattern: /test
+    defaults: { _controller: OrehaErpBundle:Root:test }
+    
+
+# CONTACTS
+oreha_erp_contact:
+    pattern:  /contacts
+    defaults: { _controller: OrehaErpBundle:Contact:index}
+    
+oreha_erp_contact_ajouter:
+    pattern:  /contact/new
+    defaults: { _controller: OrehaErpBundle:Contact:new}
+      
+oreha_erp_contact_voir:
+    pattern:  /contact/{id}
+    defaults: { _controller: OrehaErpBundle:Contact:voir}
+    requirements:
+      id: \d+
+      
+oreha_erp_contact_modifier:
+    pattern:  /contact/{id}/modifier
+    defaults: { _controller: OrehaErpBundle:Contact:modifier}
+    requirements:
+      id: \d+
+
+oreha_erp_contact_ajoute_email:
+    pattern: /contact/{id}/ajoutemail
+    defaults: { _controller: OrehaErpBundle:Contact:ajouterEmail }
+    requirements:
+       id: \d+
+       
+oreha_erp_contact_ajoute_telephone:
+    pattern: /contact/{id}/ajoutetelephone
+    defaults: { _controller: OrehaErpBundle:Contact:ajouterTelephone }
+    requirements:
+       id: \d+
+     
+oreha_erp_contact_supprime_telephone:
+    pattern: /contact/{idContact}/deletetel/{id}
+    defaults: { _controller: OrehaErpBundle:Contact:supprimeTelephone }
+    requirements:
+       idContact: \d+
+       id: \d+
+       
+oreha_erp_contact_supprime_email:
+    pattern: /contact/{idContact}/deletemail/{id}
+    defaults: { _controller: OrehaErpBundle:Contact:supprimeEmail }
+    requirements:
+       idContact: \d+
+       id: \d+
+       
+oreha_erp_contact_supprimer:
+    pattern:  /contact/{id}/supprime
+    defaults: { _controller: OrehaErpBundle:Contact:supprimeContact}
+    requirements:
+      id: \d+
+      
+      
+# SOURCES
+oreha_erp_admin:
+  pattern: /admin
+  defaults: { _controller: OrehaErpBundle:admin:index }
+  
+oreha_erp_source:
+  pattern: /admin/source
+  defaults: { _controller: OrehaErpBundle:Source:liste }
+  
+oreha_erp_source_ajouter:
+  pattern: /admin/source/ajouter
+  defaults: { _controller: OrehaErpBundle:Source:ajouterSource }
+  
+oreha_erp_source_voir:
+  pattern: /admin/source/{id}
+  defaults: { _controller: OrehaErpBundle:Source:voirSource }
+  requirements:
+    id: \d+
+    
+oreha_erp_source_modifier:
+  pattern: /admin/source/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Source:modifierSource }
+  requirements:
+    id: \d+
+    
+    
+#COURRIERS
+oreha_erp_bundle_courrier:
+  pattern: /admin/courrier
+  defaults: { _controller: OrehaErpBundle:Courrier:list }
+  
+oreha_erp_bundle_courrier_ajouter:
+  pattern: /admin/courrier/ajouter
+  defaults: { _controller: OrehaErpBundle:Courrier:ajouter }
+  
+oreha_erp_bundle_courrier_modifier:
+  pattern: /admin/courrier/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Courrier:modifier }
+  requirements:
+    id: \d+
+  
+oreha_erp_bundle_courrier_voir:
+  pattern: /admin/courrier/{id}
+  defaults: { _controller: OrehaErpBundle:Courrier:voir }
+  requirements:
+    id: \d+
+  
+oreha_erp_bundle_courrier_supprimer:
+  pattern: /admin/courrier/{id}/supprimer
+  defaults: { _controller: OrehaErpBundle:Courrier:supprimer }
+  requirements:
+    id: \d+
+  
+# DOSSIER PRETS
+oreha_erp_dossier_pret_ajouter:
+  pattern: /dossier/{id}/ajouterpret
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterPret }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_pret_voir:
+  pattern: /dossier/pret/voir/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirPret }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_pret_modifier:
+  pattern: /dossier/pret/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierPret }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_pret_supprimer:
+  pattern: /dossier/pret/supprimer/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerPret }
+  requirements:
+    id: \d+
+    
+# DOSSIER FACTURES
+oreha_erp_dossier_facture_ajouter:
+  pattern: /dossier/{id}/ajouterfacture
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterFacture }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_facture_voir:
+  pattern: /dossier/facture/voir/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirFacture }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_facture_modifier:
+  pattern: /dossier/facture/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierFacture }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_facture_supprimer:
+  pattern: /dossier/facture/supprimer/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerFacture }
+  requirements:
+    id: \d+
+    
+      
+# DOSSIER PAYEMENTS
+oreha_erp_dossier_payement_ajouter:
+  pattern: /dossier/{id}/ajouterpayement
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterPayement }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_payement_voir:
+  pattern: /dossier/payement/voir/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirPayement }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_payement_modifier:
+  pattern: /dossier/payement/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierPayement }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_payement_supprimer:
+  pattern: /dossier/payement/supprimer/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerPayement }
+  requirements:
+    id: \d+
+    
+    
+
+# FAMILLES CEE
+oreha_admin_famille_cee:
+  pattern: /admin/famillecee
+  defaults: { _controller: OrehaErpBundle:FamilleCEE:liste }
+  
+oreha_admin_famille_cee_ajouter:
+  pattern: /admin/famillecee/ajouter
+  defaults: { _controller: OrehaErpBundle:FamilleCEE:ajouterFamille }
+  
+oreha_admin_famille_cee_voir:
+  pattern: /admin/famillecee/{id}
+  defaults: { _controller: OrehaErpBundle:FamilleCEE:voirFamille }
+  requirements:
+    id: \d+
+  
+oreha_admin_famille_cee_modifier:
+  pattern: /admin/famillecee/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:FamilleCEE:modifierFamille }
+  requirements:
+    id: \d+
+    
+# FAMILLES PRESTATION
+oreha_admin_famille_prestation:
+  pattern: /admin/familleprestations
+  defaults: { _controller: OrehaErpBundle:Familles:listeFamillesPrestation }
+  
+oreha_admin_famille_prestation_ajouter:
+  pattern: /admin/familleprestation/ajouter
+  defaults: { _controller: OrehaErpBundle:Familles:ajouterFamillePrestation }
+  
+oreha_admin_famille_prestation_voir:
+  pattern: /admin/familleprestation/{id}
+  defaults: { _controller: OrehaErpBundle:Familles:voirFamillePrestation }
+  requirements:
+    id: \d+
+  
+oreha_admin_famille_prestation_modifier:
+  pattern: /admin/familleprestation/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:Familles:modifierFamillePrestation }
+  requirements:
+    id: \d+
+    
+# FAMILLES DECLARATION
+oreha_admin_famille_declaration:
+  pattern: /admin/familledeclarations
+  defaults: { _controller: OrehaErpBundle:Familles:listeFamillesDeclaration }
+  
+oreha_admin_famille_declaration_ajouter:
+  pattern: /admin/familledeclaration/ajouter
+  defaults: { _controller: OrehaErpBundle:Familles:ajouterFamilleDeclaration }
+  
+oreha_admin_famille_declaration_voir:
+  pattern: /admin/familledeclaration/{id}
+  defaults: { _controller: OrehaErpBundle:Familles:voirFamilleDeclaration }
+  requirements:
+    id: \d+
+  
+oreha_admin_famille_declaration_modifier:
+  pattern: /admin/familledeclaration/modifier/{id}
+  defaults: { _controller: OrehaErpBundle:Familles:modifierFamilleDeclaration }
+  requirements:
+    id: \d+
+    
+# DEVIS
+oreha_erp_dossier_devis_ajouter:
+  pattern: /dossier/{id}/ajouterdevis
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterDevis }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_devis_modifier:
+  pattern: /dossier/modifierdevis/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierDevis }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_devis_voir:
+  pattern: /dossier/voirdevis/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirDevis }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_devis_supprimer:
+  pattern: /dossier/supprimerdevis/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerDevis }
+  requirements:
+    id: \d+
+    
+# DEVIS CEE
+oreha_erp_dossier_devis_cee_ajouter:
+  pattern: /dossier/devis/{id}/ajoutercee
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterCEE }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_devis_cee_modifier:
+  pattern: /dossier/devis/{id}/modifiercee
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierCEE }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_devis_cee_voir:
+  pattern: /dossier/devis/cee/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirCEE }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_devis_supprimer:
+  pattern: /dossier/devis/cee/{id}/supprimer
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerCEE }
+  requirements:
+    id: \d+
+    
+    
+# DEVIS PRESTATION
+oreha_erp_dossier_prestation_ajouter:
+  pattern: /dossier/{id}/ajouterprestation
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterPrestation }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_prestation_modifier:
+  pattern: /dossier/prestation/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierPrestation }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_prestation_voir:
+  pattern: /dossier/prestation/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirPrestation }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_prestation_supprimer:
+  pattern: /dossier/prestation/{id}/supprimer
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerPrestation }
+  requirements:
+    id: \d+
+    
+  # DOSSIER - DECLARATION
+oreha_erp_dossier_declaration_ajouter:
+  pattern: /dossier/{id}/ajouterdeclaration
+  defaults: { _controller: OrehaErpBundle:Dossier:ajouterDeclaration }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_declaration_modifier:
+  pattern: /dossier/modifierdeclaration/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:modifierDeclaration }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_declaration_voir:
+  pattern: /dossier/voirdeclaration/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:voirDeclaration }
+  requirements:
+    id: \d+
+    
+oreha_erp_dossier_declaration_supprimer:
+  pattern: /dossier/supprimerdeclaration/{id}
+  defaults: { _controller: OrehaErpBundle:Dossier:supprimerDeclaration }
+  requirements:
+    id: \d+
+    
+
+# STATS
+oreha_erp_stat:
+  pattern: /statistiques
+  defaults: { _controller: OrehaErpBundle:Stats:managerIndex }
+
+# CHANTIER
+oreha_erp_chantier:
+  pattern: /chantier
+  defaults: { _controller: OrehaErpBundle:Chantier:index }
+  
+oreha_erp_chantier_voir:
+  pattern: /chantier/{id}
+  defaults: { _controller: OrehaErpBundle:Chantier:voir }
+  requirements:
+    id: \d+
+    
+oreha_erp_chantier_ajouter:
+  pattern: /client/{id}/ajouterChantier
+  defaults: { _controller: OrehaErpBundle:Client:createChantier }
+  requirements:
+    id: \d+
+  
+  #CHANTIER COMMENTAIRE
+oreha_erp_chantier_ajouter_commentaire:
+  pattern: /chantier/{id}/ajouterCommentaire
+  defaults: { _controller: OrehaErpBundle:Chantier:ajouterCommentaire }
+  requirements:
+    id: \d+
+    
+oreha_erp_chantier_modifier_commentaire:
+  pattern: /chantier/{idChantier}/modifierCommentaire/{id}
+  defaults: { _controller: OrehaErpBundle:Chantier:modifierCommentaire }
+  requirements:
+    idChantier: \d+
+    id: \d+
+    
+oreha_erp_chantier_supprimer_commentaire:
+  pattern: /chantier/{idChantier}/supprimerCommentaire/{id}
+  defaults: { _controller: OrehaErpBundle:Chantier:supprimerCommentaire }
+  requirements:
+    idChantier: \d+
+    id: \d+
+    
+    
+# SAV
+oreha_erp_sav:
+  pattern: /sav
+  defaults: { _controller: OrehaErpBundle:Sav:index }
+  
+oreha_erp_sav_ouvrir:
+  pattern: /sav/ouvrirTicketAnon
+  defaults: { _controller: OrehaErpBundle:Sav:ouvrirTicketAnon }
+  
+oreha_erp_sav_voir:
+  pattern: /sav/{id}
+  defaults: { _controller: OrehaErpBundle:Sav:voir }
+  requirements:
+    id: \d+
+    
+oreha_erp_sav_modifier:
+  pattern: /sav/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Sav:modifierTicket }
+  requirements:
+    id: \d+
+    
+    
+    
+oreha_erp_sav_ajouter:
+  pattern: /client/{id}/ouvertureTicket
+  defaults: { _controller: OrehaErpBundle:Sav:ouvertureTicket }
+  requirements:
+    id: \d+
+
+oreha_erp_sav_commentaire_ajouter:
+  pattern: /sav/{id}/ajouterCommentaire
+  defaults: { _controller: OrehaErpBundle:Sav:ajouterCommentaire }
+  requirements:
+    id: \d+    
+    
+oreha_erp_sav_commentaire_modifier:
+  pattern: /sav/{idTicket}/commentaire/{id}/modifier
+  defaults: { _controller: OrehaErpBundle:Sav:modifierCommentaire }
+  requirements:
+    id: \d+
+    idTicket: \d+
+    
+oreha_erp_sav_commentaire_supprimer:
+  pattern: /sav/{idTicket}/commentaire/{id}/supprimer
+  defaults: { _controller: OrehaErpBundle:Sav:supprimerCommentaire }
+  requirements:
+    id: \d+
+    idTicket: \d+
+    
+    
+    # ADMIN TOOLS
+    
+oreha_admin_reload_dossiers:
+  pattern: /admin/reloadDossiers
+  defaults: { _controller: OrehaErpBundle:Admin:reloadDossiers}

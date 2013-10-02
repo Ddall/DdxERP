@@ -1,0 +1,615 @@
+{# OrehaERP - Allan - OrehaErpBundle:Dossier:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - {{ dossier.intitule }}{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span11">
+            <fieldset>
+                <h2>Dossier {{ dossier.intitule|capitalize }}</h2>
+
+                {# ------------------- BARRE OUTILS --------------------- #}
+                <div class="row-fluid">
+                    <legend>
+                        <a class="btn" href="{{ path('oreha_erp_dossier') }}"><span class="icon-arrow-left"></span> Retour</a>
+                        <a class="btn btn-info" href="{{ path('oreha_erp_dossier_modifier', {'id': dossier.id } ) }}"><span class="icon-pencil"></span>  Modifier</a>
+
+                        <a class="btn btn-primary" href="{{ path('oreha_erp_dossier_rdv_ajouter', {'id': dossier.id }) }}"><span class="icon-asterisk"></span> Nouveau Rendez-vous</a>
+                        <a class="btn btn-primary showformCommentaire" href="#comments"><span class="icon-comment"></span> Ajouter une note sur le dossier</a>
+                        {% if dossier.statuts is not empty and dossier.statut.transfered is not null %}
+                            <a class="btn btn-success" href="{{ path('oreha_erp_dossier_transfert_ajouter', {'id':dossier.id} ) }}"><span class="icon-play"></span> Transferer le dossier</a>
+                        {% else %}
+                            <a class="btn disabled" href="#"><span class="icon-play"></span> Transferer le dossier</a>
+                        {% endif %}
+
+                        {# ------------------- RIGHT - AFFAIRE --------------------- #}
+                        <div class="pull-right">
+                            Statut:
+                            <span class="label label-info" >{{ dossier.statut.libelle|upper }}</span>
+                            
+                            <div class="btn-group">
+                                <a class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                    Affaire
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a onclick="return confirm('Confirmer: Affaire gagnée?');" href="{{ path('oreha_erp_dossier_gagne', {'id':dossier.id} ) }}">Affaire Gagnée</a></li>
+                                    <li><a onclick="return confirm('Confirmer: Affaire perdue?');" href="{{ path('oreha_erp_dossier_perdu', {'id':dossier.id} ) }}">Affaire Perdue</a></li>
+                                    <li class="divider"></li>
+                                    <li><a onclick="return confirm('Confirmer: Classer sans suite?');" href="{{ path('oreha_erp_dossier_sanssuite', {'id':dossier.id} ) }}">Sans suite</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </legend>
+                </div>
+                {# -------------------  ALERT STATUT / TANSFERT --------------------- #}
+                {% if dossier.statuts is not empty %}
+                    {% if dossier.statut.libelle == 'source' %}
+                        <div class="row-fluid">
+                            <div class="alert alert-danger">
+                                <strong><span class="icon-warning-sign"></span> Ce dossier est à l'état sourcing depuis le {{ dossier.statut.dateCreation|date(format_datetime) }} </strong><br>
+                                Vous devez affecter le dossier à quelqu'un.
+                                <a href="{{ path('oreha_erp_dossier_transfert_ajouter', {'id':dossier.id} ) }}" class="btn btn-big btn-success"><span class="icon-play"></span> Transferer le dossier</a>
+                                
+                            </div>
+                        </div>
+                    {% elseif dossier.statut.libelle == 'gagne' %}
+                        <div class="row-fluid">
+                            <div class="alert alert-success">
+                                <h2>Dossier en attente de validation</h2>
+                                <blockquote>
+                                    {{ dossier.statut.createur.fullName|capitalize }} signale que cette affaire à été remportée le {{ dossier.statut.dateCreation|date(format_date)}}.<br>
+                                    <strong>Vous devez valider cette étape pour passer ce dossier en client</strong><br>
+                                </blockquote>
+                                <a href="{{ path('oreha_erp_dossier_transfert_valider_client', {'id': dossier.id}) }}" class="btn btn-success"><span class="icon-thumbs-up"></span> Valider le statut client</a>
+                                <a href="{{ path('oreha_erp_dossier_transfert_refuser_client', {'id': dossier.id})}}" class="btn btn-danger"><span class="icon-thumbs-down"></span> Refuser le statut client</a>
+                            </div>
+                        </div>
+                    {% elseif dossier.statut.transfered is null %}
+                        <div class="row-fluid">
+                            <div class="alert alert-danger">
+                                <strong><span class="icon-warning-sign"></span> Ce dossier est en attente de transfert depuis le {{ dossier.statut.dateCreation|date(format_datetime) }} </strong>
+                                {% if app.user.id == dossier.statut.suiviPar.id %}
+                                    <a class="btn btn-success btn-primary" href="{{ path('oreha_erp_dossier_statut_valider', {'id': dossier.statut.id})}}" onclick="return confirm('Accepter le transfert?');"><strong><span class="icon-play"></span> Le transfert à bien été effectué.</strong></a>
+                                    <a class="btn btn-danger btn-primary" href="{{ path('oreha_erp_dossier_statut_refuser', {'id': dossier.statut.id}) }}" onclick="return confirm('Ceci annulera le transfert. Continuer?');"><strong><span class="icon-stop"></span> Refuser le transfert.</strong></a>
+                                {% elseif app.user.id == dossier.statut.createur.id %}
+                                    <a class="btn btn-danger btn-primary" href="{{ path('oreha_erp_dossier_statut_refuser', {'id': dossier.statut.id}) }}" onclick="return confirm('Ceci annulera le transfert. Continuer?');"><strong><span class="icon-stop"></span> Annuler le transfert.</strong></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                
+                {# -------------------  DOSSIER VIDE --------------------- #}
+                {% if dossier.contacts is empty %}
+                    <div class="row-fluid">
+                        <div class="alert alert-warning">
+                            <span class="icon-envelope"></span> Il n'y a pas de contacts liés à ce dossier. 
+                            <a class="btn btn-primary btn-small" href="#contacts"><span class="icon-plus"></span> Ajouter un contact</a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if dossier.biens is empty %}
+                    <div class="row-fluid">
+                        <div class="alert alert-warning">
+                            <span class="icon-home"></span> Il n'y a aucun bien dans ce dossier.
+                            <a href="{{ path('oreha_erp_dossier_bien_ajouter', {'id': dossier.id} ) }}" class="btn btn-small btn-primary"><span class="icon-plus"></span> Ajouter un bien</a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {# -------------------  HEADER --------------------- #}
+                <div class="row-fluid well">
+                    <div class="span4">
+                        <strong>Appréciation:</strong>
+                            {% if dossier.appreciation == 'positive' %}
+                                <span class="label label-success"><span class="icon-thumbs-up"></span> Positive </span>
+                            {% elseif dossier.appreciation == 'neutre' %}
+                                <span class="label label-info"><span class="icon-hand-right"></span> Neutre </span>
+                            {% else %}
+                                <span class="label label-important"><span class="icon-thumbs-down"></span> Negative </span>
+                            {%endif%}<br>
+                        <strong>Chrono dossier:</strong> {{ dossier.chrono }}<br>
+                        <strong>Statut actuel: </strong>{# {{ dossier.statut.libelle|capitalize }} #} {{ dossier.statut.code }} (depuis le {{ dossier.statut.dateCreation|date('d/m/y') }})<br>
+                        <strong>Dossier suivi par: </strong> {{ dossier.statut.suiviPar.fullName|capitalize }}<br>
+                        <strong>Source: </strong> {{ dossier.source.intitule }} ({{ dossier.source.type|capitalize}})<br>
+                        <strong>Dernier Budget: </strong> {{ dossier.statut.budget }}<br>
+                        <strong>Dernier Chiffrage: </strong> {{ dossier.statut.chiffrage }}<br>
+                        {% if dossier.description is not null %}
+                            <strong>Description:</strong><br>
+                            {{ dossier.description }}<br>
+                        {% endif %}
+                    </div>
+                        
+                    <div class="span8">
+                        {# HEADER RDV #}
+                        <div class="row-fluid">
+                            <legend>
+                                <strong>Rendez-vous</strong>
+                                <a class="btn btn-primary btn-small" href="{{ path('oreha_erp_dossier_rdv_ajouter', {'id': dossier.id }) }}" ><span class="icon-plus"></span> Nouveau RDV</a>
+                            </legend>
+                            {% if dossier.rendezvouss is not empty %}
+                                <table class="table table-condensed table-bordered table-hover table-striped">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Contact</th>
+                                        <th>Lieu</th>
+                                        <th>Modifier Supprimer</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for rdv in dossier.rendezvouss %}
+                                            <tr class="{% if rdv.isPast %}warning{% else %}succes{% endif %}">
+                                                <td>{{ rdv.type|upper }}</td>
+                                                <td>{{ rdv.date|date(format_datetime) }}</td>
+                                                <td>{{ rdv.contact.fullName|capitalize }}</td>
+                                                <td>{{ rdv.lieu.fullAdresse }}</td>
+                                                <td>
+                                                    <a href="{{ path('oreha_erp_dossier_rdv_voir', {'id':rdv.id } ) }}" class="btn btn-small"><span class="icon-edit"></span> Modifier</a>
+                                                    <a onclick="return confirm('Supprimer ce rendez-vous?');" href="{{ path('oreha_erp_dossier_rdv_supprimer', {'id':rdv.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    <strong>Il n'y a pas de RDV dans ce dossier... </strong>
+                                    <a class="btn btn-warning btn-small" href="{{ path('oreha_erp_dossier_rdv_ajouter', {'id': dossier.id }) }}" ><span class="icon-asterisk"></span> Planifier rendez-vous</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="row-fluid">
+                            <legend>
+                                <strong>Echéances </strong>
+                                <a class="btn btn-primary btn-small" href="{{ path('oreha_erp_dossier_echeance_ajouter', { 'id': dossier.id}) }}"><span class="icon-plus"></span> Planifier une tache</a>
+                            </legend>
+                            {% if dossier.echeances is empty %}
+                                <div class="alert alert-info">
+                                    <strong>Il n'y a pas d'échéances prévues pour ce dossier.</strong> <a class="btn btn-info btn-small" href="{{ path('oreha_erp_dossier_echeance_ajouter', { 'id': dossier.id}) }}"><span class="icon-plus"></span> Planifier une tache</a>
+                                </div>
+                            {% else %}
+                            <table class="table table-striped table-bordered table-condensed table-hover">
+                                    <thead>
+                                        <th>Titre</th>
+                                        <th>Date d'échéance</th>
+                                        <th>Avancement %</th>
+                                        <th><span class="icon-edit"></span></th>
+                                    </thead>
+                                    <tbody>
+                                        {% for echeance in dossier.echeances %}
+                                            <tr id="{{ path('oreha_erp_dossier_echeance_voir', {'id':echeance.id } ) }}" class="islink {% if echeance.avancement == 100 %}success{%elseif echeance.avancement > 1%}info{%else%}warning{% endif %}">
+                                                <td><strong>{{echeance.libelle|capitalize }}</strong></td>
+                                                <td>{{echeance.date|date(format_datetime) }}</td>
+                                                <td>
+                                                    <div class="progress progress-success progress-striped">
+                                                        <div class="bar" style="width: {{echeance.avancement}}%" >{{echeance.avancement}}%</div>
+                                                    </div>
+                                                </td>
+                                                <td><a href="{{ path('oreha_erp_dossier_echeance_modifier', {'id': echeance.id}) }}" class="btn btn-small">Mise à jour tache</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+                {# ************ BIEN ************ #}
+                <div class="well row-fluid">
+                    <h2>Biens <a href="{{ path('oreha_erp_dossier_bien_ajouter', {'id': dossier.id} ) }}" class="btn btn-small btn-primary"><span class="icon-plus"></span> Ajouter un bien</a></h2>
+                    {% if dossier.biens is not empty %}
+                        <ul class="thumbnails">
+                            {% for bien in dossier.biens %}
+                                <li class="span4">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <p>
+                                                <strong>Type:</strong> {{ bien.type|capitalize }}<br>
+                                                <strong>Surface:</strong> {{ bien.surface }} m²<br>
+                                                <strong>Valeur avant travaux:</strong> {{ bien.valeurAvantTravaux }}<br>
+                                                <strong>Lieu:</strong> {{ bien.adresse.fullAdresse|capitalize }}<br>
+                                            </p>
+                                            <p>
+                                                <a class="btn btn-info" href="{{ path('oreha_erp_dossier_bien_voir', {'id': bien.id}) }}"> Voir</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}   
+                        </ul>
+                    {% else %}
+                        <div class="alert alert-warning span8">
+                            <span class="icon-home"></span> Il n'y a aucun bien dans ce dossier.
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {# ************ CONTACT ************ #}
+                <div class="well row-fluid" id="contacts">
+                    <h2>Contacts 
+                        <a href="{{ path('oreha_erp_dossier_ajouter_contact', {'id':dossier.id} ) }}" class="btn btn-small btn-primary" ><span class="icon-plus"></span> Nouveau contact</a>
+                    </h2>
+                        
+                    {% if dossier.contacts is not empty %}
+                        {% for contact in dossier.contacts %}
+                            <div class="span3 well">
+                                <address>
+                                    <strong>{{ contact.prenom|capitalize }} {{ contact.nom|capitalize }} </strong>
+                                    <a href="{{ path('oreha_erp_contact_voir', {'id': contact.id}) }}" class="btn btn-info btn-small" >Fiche contact</a>
+                                    <br>
+                                    {% if contact.type == 'part' %}
+                                    <span class="label label-success">Particulier</span><br>
+                                    {% else %}
+                                    Société : {{ contact.societe }}<br>
+                                    {% endif %}
+                                    {% for telephone in contact.telephones %}
+                                        {{ telephone.numero }} ({{ telephone.libelle }})<br>
+                                    {% endfor %}
+                                    {% for email in contact.emails %}
+                                        <a href="mailto:{{ email.email }}">{{ email.email }}</a> ({{ email.libelle}})<br>
+                                    {% endfor %}
+                                </address>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-notice span8">
+                            <span class="icon-envelope"></span> Il n'y a pas de contacts liés à ce dossier.
+                        </div>
+                    {% endif%}
+                </div>   
+                
+                {# ************ NOTES COMMENTAIRES ************ #}
+                <div id="comments" class="well row-fluid">
+                    <h2>
+                        Notes sur le dossier 
+                        <a class="btn btn-small btn-primary showformCommentaire"><span class="icon-plus"></span> Ajouter un commentaire</a>
+                    </h2>
+                    <div id="formCommentaire">
+                        <form  method="post" {{ form_enctype(formCommentaire) }}>
+                            <legend>{{ form_label(formCommentaire.message) }}</legend>
+                            {{ form_widget(formCommentaire.message)}}<br>
+                            <input type="submit" class="btn btn-primary" />
+                        </form>
+                    </div>
+                    
+                    {% if dossier.commentaires is not empty %}
+                        <ul class="unstyled">
+                            {% for commentaire in dossier.commentaires %}
+                                <li>
+                                    <blockquote>
+                                        <small>
+                                            {{ commentaire.createur.fullName }} le {{ commentaire.dateCreation|date(format_date) }} à {{ commentaire.dateCreation|date(format_time) }} 
+                                            <span class="notecontrol">
+                                                <a href="{{ path('oreha_erp_dossier_commentaire_modifier', {'id':commentaire.id, 'idDossier': dossier.id} ) }}" class="label"><span class="icon-edit"></span> Modifier</a>
+                                                <a onclick="return confirm('Supprimer ce message?');" href="{{ path('oreha_erp_dossier_commentaire_supprimer', {'id':commentaire.id, 'idDossier': dossier.id} ) }}" class="label label-warning"><span class="icon-remove"></span> Supprimer</a>
+                                            <span>
+                                        </small>
+                                        {{commentaire.message}}
+                                    </blockquote>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="alert alert-info span8">
+                            <span class="icon-info-sign"></span> Ce dossier n'a pas encore de commentaires.
+                        </div>
+                    {% endif %}
+                    
+                </div>
+                    
+                {# ************  FINANCEMENT ************ #}
+                <div class="row-fluid well">
+                    <h2>
+                        Financement
+                        <a href="{{ path('oreha_erp_dossier_pret_ajouter', {'id': dossier.id}) }}" class="btn btn-small btn-primary"><span class="icon-plus"></span> Ajouter un financement</a>
+                    </h2>
+                    {% if dossier.prets is not empty %}
+                        <div class="span5">
+                            <table class="table table-hover table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Type/Nom</th>
+                                        <th>Banque</th>
+                                        <th>Montant</th>
+                                        <th>Taux</th>
+                                        <th>Date de demande</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pret in dossier.prets %}
+                                        <tr  class="islink" id="{{ path('oreha_erp_dossier_pret_voir', {'id': pret.id}) }}">
+                                            <td></td>
+                                            <td>{{ pret.nom }}</td>
+                                            <td>{{ pret.banque }}</td>
+                                            <td>{{ pret.montant }}</td>
+                                            <td>{{ pret.taux }}</td>
+                                            <td>{{ pret.date|date(format_date) }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        <tr class="info">
+                                            <td colspan="3" ><strong>Capacité de financement totale:</strong></td>
+                                            <td>{{ dossier.montantTotalPrets}} €</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info span8">
+                            <span class="icon-info-sign"></span> Aucun prêt pour ce dossier.
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {# ************ FACTURATION ************ #}
+                <div id="facturation" class="row-fluid well">
+                    <h2>
+                        Facturation
+                        <a class="btn btn-small btn-primary" href="{{ path('oreha_erp_dossier_facture_ajouter', {'id':dossier.id} )}}"><span class="icon-plus"></span> Saisir une facture</a>
+                        <a class="btn btn-small btn-primary" href="{{ path('oreha_erp_dossier_payement_ajouter', {'id':dossier.id} )}}"><span class="icon-plus"></span> Saisir un paiement</a>
+                    </h2>
+                    {% if dossier.payements is not empty or dossier.factures is not empty %}
+                        <table class="table table-hover table-striped table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Libellé</th>
+                                    <th>Date</th>
+                                    <th>Echéance</th>
+                                    <th>Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for facture in dossier.factures %}
+                                    <tr class="islink" id="{{ path('oreha_erp_dossier_facture_voir', {'id': facture.id})}}">
+                                        <td>
+                                            {% if facture.montantTTC >= 0 %}
+                                               Facture
+                                            {%else%}
+                                                Avoir
+                                            {%endif%} 
+                                            - {{ facture.chronoFacture}}
+                                        </td>
+                                        <td>{{ facture.libelle }} </td>
+                                        <td>{{ facture.date|date(format_date)}}</td>
+                                        <td>{{facture.echeance|date(format_date)}}</td>
+                                        <td>{{ facture.montantTTC}}€</td>
+                                    </tr>
+
+                                {%endfor%}
+                                <tr class="info">
+                                    <td colspan="4"><span class="pull-right"><strong>Total Facturé:</strong></span></td>
+                                    <td colspan="1"> {{ dossier.totalFacture }}€</td>
+                                </tr>
+                                {% for payement in dossier.payements%}
+                                    <tr class="islink" id="{{ path('oreha_erp_dossier_payement_voir', {'id': payement.id})}}">
+                                        <td>
+                                            Reglement
+                                            ({{ payement.mode|capitalize}})
+                                        </td>
+                                        <td>{{ payement.libelle}}</td>
+                                        <td>{{ payement.date|date(format_date)}}</td>
+                                        <td></td>
+                                        <td>{{ payement.montant }}€</td>
+                                    </tr>
+                                {%endfor%}
+                                <tr class="info">
+                                    <td colspan="4">
+                                        <span class="pull-right"><strong>Total Payé:</strong></span>
+                                    </td>
+                                    <td colspan="1">
+                                         {{ dossier.totalPaye }}€
+                                    </td>
+                                </tr>
+                                <tr class="
+                                {% if dossier.balanceFacturation > 0 %}
+                                    success
+                                {% elseif dossier.balanceFacturation < 0 %}
+                                    error
+                                {% endif %}">
+                                    <td colspan="4">
+                                        <span class="pull-right"><strong>Encours actuel: </strong></span>
+                                    </td>
+                                    <td colspan="1">
+                                        {{ dossier.balanceFacturation}}€
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    {% else %}
+                        <span class="alert alert-info span8"><span class="icon-info-sign"></span> Aucune facture ou réglements pour ce dossier.</span>
+                    {% endif %}
+                </div>
+                {# ************ PRESTATIONS ************ #}
+                <div id="prestations" class="row-fluid well">
+                    <h2>
+                        Prestations
+                        <a class="btn btn-small btn-primary" href="{{ path('oreha_erp_dossier_prestation_ajouter', {'id': dossier.id})}}"><span class="icon-plus"></span> Nouvelle prestation</a>
+                    </h2>
+                    {% if dossier.prestations is not empty %}
+                        <div class="span8">
+                            <table class="table table-hover table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Montant</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for prestation in dossier.prestations %}
+                                        <tr class="islink" id="{{ path('oreha_erp_dossier_prestation_voir', {'id': prestation.id})}}">
+                                            <td>{{ prestation.famille.nom}}</td>
+                                            <td>
+                                                {% if prestation.montant is not null %}
+                                                    {{ prestation.montant}}€
+                                                {%else%}
+                                                    <span class="text-success">Prestation gratuite</span>
+                                                {%endif%}
+                                            </td>
+                                            <td>{{ prestation.dateCreation|date(format_date)}}</td>
+                                        </tr>
+                                    {% endfor%}
+                                        <tr class="info">
+                                            <td><strong>Total</strong></td>
+                                            <td>{{ dossier.montantTotalPrestations|number_format }}€</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info span8">
+                            <span class="icon-info-sign"></span> Aucune prestation pour ce dossier.
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {# ************ DEVIS ************ #}
+                <div class="row-fluid well">
+                    <h2>
+                        Devis
+                        <a class="btn btn-small btn-primary" href="{{ path('oreha_erp_dossier_devis_ajouter', {'id': dossier.id }) }}"><span class="icon-plus"></span> Saisir un devis</a>
+                    </h2>
+                    {% if dossier.deviss is not empty %}
+                        <div class="span8">
+                            <table class="table table-hover table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date du devis</th>
+                                        <th>Remis au client</th>
+                                        <th>Montant HT</th>
+                                        <th>Montant TVA Normale</th>
+                                        <th>Montant TVA Reduite</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for devis in dossier.deviss %}
+                                        <tr class="islink
+                                            {% if devis.dateSignature is not null %}
+                                                success
+                                            {% elseif devis.dateRefus is not null  %}
+                                                error
+                                            {% elseif devis.dateRemise is not null %}
+                                                info
+                                            {% else  %}
+                                                warning
+                                            {% endif %}
+                                            " id="{{ path('oreha_erp_dossier_devis_voir', {'id': devis.id})}}">
+                                            <td>{{ devis.chronoDevis}}</td>
+                                            <td>{{ devis.date is empty ? '': devis.date|date(format_date)}}</td>
+                                            <td>{{ devis.dateRemise is empty ? 'Pas encore remis': devis.dateRemise|date(format_date) }}</td>
+                                            <td>{{ devis.montantHT|default('') }}</td>
+                                            <td>{{ devis.montantTVANormale|default('') }}</td>
+                                            <td>{{ devis.montantTVAReduite|default('') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info span8">
+                            <span class="icon-info-sign"></span> Aucun devis pour ce dossier.
+                        </div>
+                    {% endif %}
+                        
+                </div>
+                
+                {# ************ DECLARATION ADMINISTATIVE ************ #}
+                <div class="row-fluid well">
+                    <div class="span11">
+                        <h2>
+                            Déclarations Administratives
+                            <a class="btn btn-small btn-primary" href="{{ path('oreha_erp_dossier_declaration_ajouter', {'id':dossier.id}) }}"><span class="icon-plus"></span> Ajouter une déclaration</a>
+                        </h2>
+
+                        {% if dossier.declarations is not empty %}
+                            <div class="span8">
+                                <table class="table table-hover table-striped table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Nom</th>
+                                            <th>Date de la demande</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        {% for declaration in dossier.declarations %}
+                                            <tr class="islink {{ declaration.statut == 'accepte' ? 'success':''}}" id="{{ path('oreha_erp_dossier_declaration_voir', {'id': declaration.id}) }}">
+                                                <td>{{ declaration.famille.nom|upper}}</td>
+                                                <td>{{ declaration.nom }}</td>
+                                                <td>{{ declaration.dateDepot is empty ? '': declaration.dateDepot|date(format_date)}}</td>
+                                                <td>{{ declaration.statut }}</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        {%else%}
+                            <div class="alert alert-info span8">
+                                <span class="icon-info-sign"></span> Pas de déclarations administratives pour ce dossier.
+                            </div>
+                        {%endif%}
+
+                    </div>
+                </div>
+                
+                {# ************ STATUT HISTORIQUE ************ #}
+                <div class="row-fluid well">
+                    <div class="">
+                        <div class="span11">
+                            <h2>
+                                Historique 
+                            </h2>
+                            <blockquote>
+                                Créé par {{ dossier.createur.fullName }} le {{ dossier.dateCreation.date|date('d/m/y H:i')}}<br>
+                                Dernière modification par {{ dossier.dernierModificateur.fullName }} le {{ dossier.dateDerniereModif.date|date('d/m/y H:i')}}<br>  
+                            </blockquote>
+                            <table class="table table-hover table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Transfert par</th>
+                                        <th>Suivi par</th>
+                                        <th>Date</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for statut in dossier.statuts %}
+                                        <tr>
+                                            <td>{{ statut.libelle }} <b>{{statut.code|upper}}</b></td>
+                                            <td>{{ statut.createur.fullName }}</td>
+                                            <td>{{ statut.suiviPar.fullName }}</td>
+                                            <td>{{ statut.dateCreation.date|date('d/m/y H:i') }} </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+{% block javascripts %}
+{{ parent()}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#formCommentaire').hide();
+       $('.showformCommentaire').click(function(){
+          $('#formCommentaire').slideToggle();
+       });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{# OrehaERP - Allan - OrehaUserBundle:GestionUsers:gerer.html.twig #}
+{% extends 'FOSUserBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} - Comptes utilisateurs{% endblock %}
+{% block fos_user_content %}
+<div class="row-fluid">
+    <div class="span12">
+        <fieldset>
+            <legend>
+                Comptes utilisateurs
+                <a class="btn btn-primary btn-small" href="{{ path('oreha_erp_admin_users_add') }}"><i class="icon-plus" ></i> Ajouter</a>
+            </legend>
+            <table class="table table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Dernière connexion</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+            {% for user in users %}
+                <tr id="{{ path('oreha_erp_admin_user', {'username': user.username})}}" class="islink usertable {% if not user.enabled %}error{% endif %}">
+                    <td>{{ user.fullName }}</td>
+                    <td>{% if user.lastlogin is not empty %}{{ user.lastlogin.date|date(format_datetime) }} {%else%}Jamais{%endif%}</td>
+                    <td>
+                        {% if not user.enabled %}
+                            <span class="label label-important">Verrouillé</span>
+                        {% else %}
+                            <span class="label label-success">Actif</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {%endfor %}
+            </table>
+        </fieldset>
+    </div>
+</div>
+{% endblock fos_user_content %}

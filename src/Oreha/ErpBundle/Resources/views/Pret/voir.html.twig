@@ -1,0 +1,71 @@
+{# OrehaERP - Allan - OrehaErpBundle:Pret:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir Pret{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            Financement {{ pret.nom }} ({{ pret.dossier.intitule}})
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': pret.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_pret_modifier', {'id': pret.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer ce pret?');" href="{{ path('oreha_erp_dossier_pret_supprimer', {'id':pret.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                {% if pret.dateAccepte is not null %}
+                    <div class="alert alert-success"> 
+                        <span class="icon-thumbs-up"></span> Pret accepté le {{ pret.dateAccepte|date(format_date)}}
+                    </div>
+                {% elseif pret.dateRefus is not null %}
+                    <div class="alert alert-error">
+                        <span class="icon-thumbs-down"></span> Pret refusé le {{ pret.dateRefus|date(format_date)}}
+                    </div>
+                {% else %}
+                {% endif %}
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <strong>Nom du pret : </strong>{{ pret.nom }}<br>
+                    <strong>Date du pret : </strong> {{ pret.date|date(format_date) }}<br>
+                    <strong>Montant : </strong> {{ pret.montant }}<br>
+                    <strong>Taux : </strong> {{ pret.taux }}<br>
+                    <strong>Banque : </strong> {{ pret.banque }}<br>
+                    <strong>Coordonées bancaires:</strong><br>
+
+                    {% if pret.rib is not empty %}
+                        <div class="span10">
+                            <h3>Identifiant nationnal de compte bancaire - RIB</h3>
+                            <strong>Domiciliation : </strong> {{ pret.rib.domiciliation|default('NON RENSEIGNE') }}<br>
+                            <strong>Titulaire du compte : </strong>{{ pret.rib.titulaire|default('NON RENSEIGNE')}}<br>
+                            <div class="row-fluid offset1">
+                                <div class="row">
+                                    <div class="span1"><strong>Banque</strong></div>
+                                    <div class="span1"><strong>Gichet</strong></div>
+                                    <div class="span2"><strong>Compte</strong></div>
+                                    <div class="span1"><strong>Clé</strong></div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span1">{{ pret.rib.banque|default('VIDE') }}</div>
+                                    <div class="span1">{{ pret.rib.gichet|default('VIDE') }}</div>
+                                    <div class="span2">{{ pret.rib.compte|default('VIDE') }}</div>
+                                    <div class="span1">{{ pret.rib.cle|default('VIDE') }}</div>
+                                </div>
+                            </div>
+
+                            <h3>Identifiant internationnal de compte bancaire - IBAN</h3>
+                            {{ pret.rib.iban|default('NON RENSEIGNE')|upper }}
+
+                            <h3>BIC</h3>
+                            {{ pret.rib.BIC|default('NON RENSEIGNE')|upper }}
+                        </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <span class="icon-info-sign"></span> Coordonées bancaires non renseignées.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

@@ -1,0 +1,36 @@
+{# OrehaERP - Allan - OrehaErpBundle:FamilleCEE:list.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{%  block title %}{{parent()}}Admin - Familles de CEE{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span11">
+            <legend>
+                Familles de CEE
+                <a class="btn btn-small btn-success" href="{{ path('oreha_admin_famille_cee_ajouter') }}" ><span class="icon-plus"></span> Nouvelle famille de CEE </a>
+            </legend>
+            
+            <div class="span8">
+                <table class="table table-condensed table-hover table-striped">
+                    <thead>
+                        <th>Nom</th>
+                        <th>Code</th>
+                        <th>Date de création du modèle</th>
+                    </thead>
+                    <tbody>
+                        {% for famille in listeFamilles %}
+                            <tr id="{{ path('oreha_admin_famille_cee_voir', { 'id': famille.id }) }}" class="islink">
+                                <td>
+                                    {{ famille.nom }}
+                                </td>
+                                <td>{{ famille.code }}</td>
+                                <td>{{ famille.dateCreation|date(format_datetime) }} par {{ famille.createur.fullName|capitalize }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

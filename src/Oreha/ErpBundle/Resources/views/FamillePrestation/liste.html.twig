@@ -1,0 +1,36 @@
+{# OrehaERP - Allan - OrehaErpBundle:FamillePrestation:list.html.twig #}
+{% extends "::orehaAdminTemplate.html.twig" %}
+{%  block title %}{{parent()}}Admin - Familles de prestations{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span11">
+            <legend>
+                Familles de prestations
+                <a class="btn btn-small btn-success" href="{{ path('oreha_admin_famille_prestation_ajouter') }}" ><span class="icon-plus"></span> Nouvelle famille de prestations </a>
+            </legend>
+            
+            <div class="span8">
+                <table class="table table-condensed table-hover table-striped">
+                    <thead>
+                        <th>Nom</th>
+                        <th>Active</th>
+                        <th>Date de création du modèle</th>
+                    </thead>
+                    <tbody>
+                        {% for famille in listeFamillesPrestation %}
+                            <tr id="{{ path('oreha_admin_famille_prestation_voir', { 'id': famille.id }) }}" class="islink {{ famille.active ? '': 'error'}}">
+                                <td>
+                                    {{ famille.nom }}
+                                </td>
+                                <td>{{ famille.active ? 'Oui' : 'Non' }}</td>
+                                <td>{{ famille.dateCreation|date(format_datetime) }} par {{ famille.createur.fullName|capitalize }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

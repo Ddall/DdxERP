@@ -1,0 +1,31 @@
+{# OrehaERP - Allan - OrehaErpBundle:Echeance:voir.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{%  block title %}{{parent()}} - Voir Echeance{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <legend>
+            {{echeance.dossier.intitule|upper}} - Echéance : {{ echeance.libelle }} 
+            <a href="{{ path('oreha_erp_dossier_voir', {'id': echeance.dossier.id}) }}" class="btn btn-small"><span class="icon-arrow-left"></span> Retour</a>
+            <a href="{{ path('oreha_erp_dossier_echeance_modifier', {'id': echeance.id}) }}" class="btn btn-small btn-info"><span class="icon-edit"></span> Modifier</a>
+            <a onclick="return confirm('Supprimer cette échéance?');" href="{{ path('oreha_erp_dossier_echeance_supprimer', {'id':echeance.id } ) }}" class="btn btn-small btn-warning"><span class="icon-remove"></span>  Supprimer</a>
+        </legend>
+        <div class="well">
+            <div class="row-fluid">
+                <div class="span5">
+                    <strong>Intutulé de la tache : </strong>{{ echeance.libelle }}<br>
+                    <strong>Date d'échéance : </strong> {{ echeance.date|date(format_datetime) }}<br>
+                    <strong>Avancement : </strong> 
+                    <div class="progress progress-striped">
+                        <div class="bar-info" style="width: {{ echeance.avancement }}%;">
+                            {{ echeance.avancement }}%
+                        </div>
+                    </div>
+                    <strong>Description : </strong><br>
+                    <p>{{ echeance.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}

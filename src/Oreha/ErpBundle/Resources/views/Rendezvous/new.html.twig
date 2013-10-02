@@ -1,0 +1,137 @@
+{# OrehaERP - Allan - Oreha:ErpBundle:Rendezvous:new.html.twig #}
+{% extends "::orehaTemplate.html.twig" %}
+{% block title %}{{ parent()}} - Planifier un rendez-vous{% endblock %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div  class="span10">
+            <fieldset>
+                <legend>
+                    Planifier un rendez-vous. {{ dossier.intitule }}
+                    <a class="btn" href="{{ path('oreha_erp_dossier_voir', {'id': dossier.id}) }}"><span class="icon-arrow-left"></span> Retour</a>
+                </legend>
+                    
+                <form id="myForm" {{ form_enctype(formRdv) }} method="POST">
+                    <div class="row-fluid well lead">
+                        <div class="pull-left span5">
+                            {{ form_widget(formRdv )}}
+                            <strong>Nom du contact:</strong><span id="_contact"> <span class="muted">Selectionner un contact</span> </span><br>
+                            <strong>Lieu du rendez-vous:</strong><span id="_lieu"> <span class="muted">Selectionnez un lieu</span> </span><br>
+                        </div>
+                        <div class=" span5">
+                            <input id="btnsubmit" type="submit" class="btn btn-large btn-success disabled" value="Enregistrer RDV">
+                        </div>
+                    </div>
+                </form>
+                {# ----------------------- CONTACTS ------------------------ #}
+                <div class="row-fluid well">
+                    <div class="span8">
+                        <legend>Contact</legend>
+                        {% if dossier.contacts is not empty %}
+                            <ul class="thumbnails">
+                            {% for contact in dossier.contacts %}
+                                
+                                    <li class="span4">
+                                        <div id='th_contact_{{ contact.id }}' class='thumbnail th_contact'>
+                                            <label class="radio">
+                                                <legend>
+                                                    <span class="icon-user"></span> <span id="name_{{ contact.id}}">{{ contact.fullName }}</span>
+                                                    <input type="radio" name="choixContact" id="contact_{{contact.id}}" value="{{contact.id}}" class="choixContact">
+                                                </legend>
+                                                    {% if contact.adresse %}
+                                                        <div class="adressContact lieuRdv" id="contact_{{contact.id}}_address">
+                                                            <label class="radio">
+                                                                <span class="text text-info">Utiliser cette adresse</span>
+                                                                <input type="radio" name="choixAdresse" value="{{contact.adresse.id}}">
+                                                            </label>
+                                                        </div>
+                                                        <strong>Adresse:</strong>
+                                                        <p><span id="lieu_{{contact.adresse.id}}">{{ contact.adresse.fullAdresse }}</span></p>
+                                                    {% else %}
+                                                        <div class="alert alert-notice">Pas d'adresse</div>
+                                                    {% endif %}
+                                                </p>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="alert alert-notice">
+                                <span class="icon-warning-sign"></span>
+                                <strong>Attention:</strong> Ce dossier n'a aucun contact.
+                                <a class="btn btn-primary btn-small pull-right" href="{{ path('oreha_erp_dossier_ajouter_contact', {'id':dossier.id} ) }}">Ajouter un contact au dossier</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# ----------------------- BIENS ------------------------ #}
+                <div class="row-fluid well">
+                    <div class="span8">
+                        <legend>Biens</legend>
+                        {% if dossier.biens is not empty %}
+                                {% for bien in dossier.biens %}
+                                    <li class="span4">
+                                        <div class="thumbnail lieuRdv">
+                                            <label class="radio">
+                                                <span class="text text-info">Utiliser cette adresse</span>
+                                                <input type="radio" name="choixAdresse" id="bien_{{bien.id}}" value="{{bien.adresse.id}}">
+                                            </label>
+                                                <p>
+                                                    <strong>Type:</strong> {{ bien.type|capitalize }}<br>
+                                                    <strong>Surface:</strong> {{ bien.surface }} m²<br>
+                                                    <strong>Lieu:</strong><span id="lieu_{{bien.adresse.id}}">{{ bien.adresse.fullAdresse|capitalize }}</span>
+                                                </p>
+                                        </div>
+                                    </li>
+                                {% endfor %} 
+                        {% else %}
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.addr').hide();
+        
+        $('input:radio[name=choixContact]').prop('checked', false);
+        $('input:radio[name=choixAdresse]').prop('checked', false);
+        
+   
+        
+        $('.adressContact').hide();
+        
+        $('input:radio[name=choixContact]').click(function(){
+            $('#form_id_contact').val( $(this).attr('value') );
+            
+            
+            $('#_contact').html( $('#name_'+ $(this).attr('value') ).html() );
+            
+            $('.th_contact').removeClass('alert-success');
+            $('.adressContact').hide();
+            
+            var parent = $(this).attr('id');
+            $( '#th_'+ parent).addClass('alert-success');
+            $('#'+ parent + '_address').show();
+            
+            $('#btnsubmit').removeClass('disabled');
+        });
+        
+        $('input:radio[name=choixAdresse]').click(function(){
+            $('.lieuRdv').removeAttr('alert alert-notice');
+            
+            $('#_lieu').html( $('#lieu_'+ $(this).attr('value') ).html() );
+            $('#form_id_adresse').val(  $(this).attr('value') );
+        });
+        
+    });
+</script>
+{% endblock javascripts %}
