@@ -4,7 +4,7 @@ parameters:
     database_port:     ~
     database_name:     oreha
     database_user:     oreha
-    database_password: XCcX6RbAJSTQLZ72
+    database_password: lol_mdp
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
@@ -12,7 +12,7 @@ parameters:
     mailer_password:   ~
 
     locale:            fr
-    secret:            bnRIO5VLwmKIXyMCe6vNe89Oo7oiaxwh
+    secret:            LOL_secret
 
     google_api_key:   xxxx
     google_map_api_url: xxxx
@@ -20,7 +20,7 @@ parameters:
     sys_user: system
     admin_username : admin
     superadmin_group : ROLE_SUPER_ADMIN
-    app_email:    contact@oreha.fr
+    app_email:    contact@XXXX.fr
     
     format_date : "d/m/Y"
     format_datetime: "d/m/Y H:i"    
